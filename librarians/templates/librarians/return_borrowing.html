@@ -1,0 +1,24 @@
+<main>
+  <div class="return-borrowing-container">
+    <div class="content-return-borrowing-container">
+      <h1 class="return-borrowing-heading">Rentrer un emprunt</h1>
+      <form action="" method="post" class="select-borrowing-form">
+        {% for borrowing in borrowings_list %}
+        <label for="info-borrowing" class="info-borrowing">
+          <span class="borrowing-id">{{ borrowing.id }}</span>
+          <span class="first-name">{{ borrowing.member.user.first_name }}</span>
+          <span class="last-name">{{ borrowing.member.user.last_name }}</span>
+          <span class="media-name">{{ borrowing.media.name }}</span>
+          <span class="media-type">{{ borrowing.media.type }}</span>
+        </label>
+        <input type="checkbox" name="info-borrowing" id="info-borrowing" />
+        {% empty %}
+        <p>Il n'y a actuellement aucun emprunt.</p>
+        {% endfor %}
+      </form>
+      <div class="submit-btn-container">
+        <input type="submit" value="Rentrer" class="submit-btn" />
+      </div>
+    </div>
+  </div>
+</main>

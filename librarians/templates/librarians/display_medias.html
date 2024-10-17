@@ -3,12 +3,15 @@
     <div class="content-display-medias-container">
       <h1 class="media-list-heading">Liste médias</h1>
       <div class="media-list">
-        <!-- Ceci est un exemple de ce à quoi un élément de la liste doit ressembler -->
+        {% for media in medias_list %}
         <div class="media">
-          <span class="media-name">Nom du média</span>
-          <span class="media-type">Type du média</span>
-          <span class="quantity">0</span>
+          <span class="media-name">{{ media.name }}</span>
+          <span class="media-type">{{ media.type }}</span>
+          <span class="quantity">{{ media.quantity }}</span>
         </div>
+        {% empty %}
+        <p>Aucun média trouvé.</p>
+        {% endfor %}
       </div>
     </div>
   </div>

@@ -9,3 +9,6 @@ class Media(models.Model):
     available = models.BooleanField(default=True)
     borrowers_number = models.IntegerField(null=True, blank=True)
     quantity = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.type})"
