@@ -1,9 +1,17 @@
 from django.shortcuts import render
+from .models_members import Member
+from .models_medias import Media
 
 
 # Create your views here.
 def home(request):
-    context = {'name': 'home'}
+    members_list = Member.objects.all()
+    medias_list = Media.objects.all()
+    context = {
+        'name': 'home',
+        'members_list': members_list,
+        'medias_list': medias_list
+    }
     return render(request, 'librarians/home.html', context)
 
 
@@ -35,6 +43,7 @@ def create_member(request):
 def display_members(request):
     context = {'name': 'display_members'}
     return render(request, 'librarians/display_members.html', context)
+
 
 def update_member(request):
     context = {'name': 'update_member'}
