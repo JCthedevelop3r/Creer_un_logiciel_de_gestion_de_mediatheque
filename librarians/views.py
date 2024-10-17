@@ -61,7 +61,11 @@ def create_member(request):
 
 
 def display_members(request):
-    context = {'name': 'display_members'}
+    members_list = Member.objects.all()
+    context = {
+        'name': 'display_members',
+        'members_list': members_list
+    }
     return render(request, 'librarians/display_members.html', context)
 
 
