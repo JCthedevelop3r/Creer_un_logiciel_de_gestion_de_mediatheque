@@ -15,14 +15,26 @@ def home(request):
     return render(request, 'librarians/home.html', context)
 
 
-def create_loan(request):
-    context = {'name': 'create_loan'}
-    return render(request, 'librarians/create_loan.html', context)
+def create_borrow(request):
+    members_list = Member.objects.all()
+    medias_list = Media.objects.all()
+    context = {
+        'name': 'create_borrow',
+        'members_list': members_list,
+        'medias_list': medias_list
+    }
+    return render(request, 'librarians/create_borrow.html', context)
 
 
-def return_loan(request):
-    context = {'name': 'return_loan'}
-    return render(request, 'librarians/return_loan.html', context)
+def return_borrow(request):
+    members_list = Member.objects.all()
+    medias_list = Media.objects.all()
+    context = {
+        'name': 'return_borrow',
+        'members_list': members_list,
+        'medias_list': medias_list
+    }
+    return render(request, 'librarians/return_borrow.html', context)
 
 
 def display_medias(request):

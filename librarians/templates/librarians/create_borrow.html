@@ -1,0 +1,38 @@
+<main>
+  <div class="create-loan-container">
+    <div class="content-create-loan-container">
+      <h1 class="create-loan-heading">Créer un emprunt</h1>
+      <div class="select-member-container">
+        <h2 class="select-member-heading">Sélectionnez un membre :</h2>
+        <form action="" method="post" class="select-member-form">
+          {% for member in members_list %}
+          <label for="member-name-{{ forloop.counter }}" class="member-name-label">
+            <span class="first-name">{{ member.user.first_name }}</span>
+            <span class="last-name">{{ member.user.last_name }}</span>
+          </label>
+          <input type="checkbox" name="member-name" id="member-name-{{ forloop.counter }}" />
+          {% empty %}
+            <p>Il n'y a actuellement aucun membre.</p>
+          {% endfor %}
+        </form>
+      </div>
+      <div class="select-media-container">
+        <h2 class="select-media-heading">Sélectionnez un média :</h2>
+        <form action="" method="post" class="select-media-form">
+          {% for media in medias_list %}
+          <label for="media-name-{{ forloop.counter }}" class="media-name-label">
+            <span class="media-name">{{ media.name }}</span>
+            <span class="media-type">{{ media.type }}</span>
+          </label>
+          <input type="checkbox" name="media-name" id="media-name-{{ forloop.counter }}" />
+          {% empty %}
+          <p>Il n'y a actuellement aucun média.</p>
+          {% endfor %}
+        </form>
+      </div>
+      <div class="submit-btn-container">
+        <input type="submit" value="Créer" class="submit-btn" />
+      </div>
+    </div>
+  </div>
+</main>
