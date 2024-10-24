@@ -4,19 +4,29 @@
             <h1 class="add-media-heading">Ajouter un média</h1>
         </div>
         <form action="" method="post" class="add-media-form">
-                <div class="media-name-input-container">
-                    <label for="media-name" class="media-name">Nom : </label>
-                    <input type="text" id="media-name" class="media-name-input">
-                </div>
-                <div class="media-type-input-container">
-                    <label for="media-type" class="media-type">Type : </label>
-                    <input type="text" id="media-type" class="media-type-input">
-                </div>
-                <div class="quantity-input-container">
-                    <label for="media-quantity" class="media-quantity">Quantité : </label>
-                    <input type="text" id="media-quantity" class="media-quantity-input">
-                </div>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                {% if message.tags %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% csrf_token %}
+            <div class="media-name-input-container">
+                <label for="media-name" class="media-name">Nom : </label>
+                <input type="text" id="media-name" name="media-name" class="media-name-input">
+            </div>
+            <div class="media-type-input-container">
+                <label for="media-type" class="media-type">Type : </label>
+                <input type="text" id="media-type" name="media-type" class="media-type-input">
+            </div>
+            <div class="quantity-input-container">
+                <label for="media-quantity" class="media-quantity">Quantité : </label>
+                <input type="text" id="media-quantity" name="media-quantity" class="media-quantity-input">
+            </div>
+            <input type="submit" value="Ajouter" class="submit-btn">
         </form>
-        <input type="submit" value="Ajouter" class="submit-btn">
     </div>
 </main>

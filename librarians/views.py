@@ -52,8 +52,28 @@ def display_medias(request):
 
 
 def add_media(request):
-    context = {'name': 'add_media'}
-    return render(request, 'librarians/add_media.html', context)
+    if request.method == 'POST':
+        media_name = request.POST['media-name']
+        media_type = request.POST['media-type']
+        media_quantity = request.POST['media-quantity']
+
+        if Media.objects.filter(name=media_name, type=media_type).exists():
+            messages.error(request, "Ce média a déjà été ajouté.")
+            return render(request, 'librarians/add_media.html', {
+                'media_name': media_name,
+                'media_type': media_type,
+                'media_quantity': media_quantity
+            })
+
+        media = Media.objects.create(
+            name=media_name,
+            type=media_type,
+            quantity=int(media_quantity)
+        )
+
+        messages.success(request, "Le média a été ajouté avec succès.")
+
+    return render(request, 'librarians/add_media.html')
 
 
 def create_member(request):
@@ -87,8 +107,6 @@ def create_member(request):
         )
 
         messages.success(request, "Le membre a été créé avec succès.")
-        messages.error(request, "Une erreur s'est produite. Veuillez réessayer.")
-
     return render(request, 'librarians/create_member.html')
 
 

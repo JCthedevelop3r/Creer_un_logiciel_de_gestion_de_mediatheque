@@ -16,7 +16,7 @@ class MemberAdmin(admin.ModelAdmin):
 
 
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ['name', 'borrowing_date', 'available', 'borrowers_number', 'quantity']
+    list_display = ['name', 'type', 'borrowing_date', 'available', 'borrowers_number', 'quantity']
 
 
 class BorrowingAdmin(admin.ModelAdmin):
