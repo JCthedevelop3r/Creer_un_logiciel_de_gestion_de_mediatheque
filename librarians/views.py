@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models_borrowing import Borrowing
@@ -43,6 +43,12 @@ def return_borrowing(request):
 
 
 def display_medias(request):
+    if request.method == 'POST':
+        media_id = request.POST.get("media_id")
+        media = get_object_or_404(Media, id=media_id)
+        media.delete()
+        messages.success(request, "Le média a été supprimé avec succès.")
+
     medias_list = Media.objects.all()
     context = {
         'name': 'display_medias',
