@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.home),
-    path('create_borrow', views.create_borrow),
+    path('create_borrowing', views.create_borrowing, name='create_borrowing'),
     path('return_borrowing', views.return_borrowing),
     path('display_medias', views.display_medias),
     path('add_media', views.add_media),

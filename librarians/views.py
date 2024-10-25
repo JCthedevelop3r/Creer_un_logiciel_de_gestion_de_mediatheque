@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from datetime import date
 from .models_borrowing import Borrowing
 from .models_members import Member
 from .models_medias import Media
@@ -18,15 +19,35 @@ def home(request):
     return render(request, 'librarians/home.html', context)
 
 
-def create_borrow(request):
+def create_borrowing(request):
+    if request.method == 'POST':
+        member_id = request.POST.get('member_id')
+        media_ids = request.POST.getlist('media_ids')
+
+        member = get_object_or_404(Member, id=member_id)
+
+        # Vérification du nombre d'emprunts existants pour le membre
+        current_borrowings = Borrowing.objects.filter(member=member).count()
+
+        if current_borrowings >= 3:
+            messages.error(request, "Ce membre a déjà atteint le nombre maximum d'emprunts (3).")
+            return redirect('create_borrowing')
+
+        for media_id in media_ids:
+            media = get_object_or_404(Media, id=media_id)
+            Borrowing.objects.create(member=member, media=media, borrowing_date=date.today())
+
+        messages.success(request, "L'emprunt a été créé avec succès.")
+        return redirect('create_borrowing')
+
     members_list = Member.objects.all()
     medias_list = Media.objects.all()
     context = {
-        'name': 'create_borrow',
+        'name': 'create_borrowing',
         'members_list': members_list,
         'medias_list': medias_list
     }
-    return render(request, 'librarians/create_borrow.html', context)
+    return render(request, 'librarians/create_borrowing.html', context)
 
 
 def return_borrowing(request):
