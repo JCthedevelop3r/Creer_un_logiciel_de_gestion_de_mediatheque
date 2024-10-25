@@ -44,7 +44,7 @@ def return_borrowing(request):
 
 def display_medias(request):
     if request.method == 'POST':
-        media_id = request.POST.get("media_id")
+        media_id = request.POST.get("media-id")
         media = get_object_or_404(Media, id=media_id)
         media.delete()
         messages.success(request, "Le média a été supprimé avec succès.")
@@ -117,6 +117,14 @@ def create_member(request):
 
 
 def display_members(request):
+    if request.method == 'POST':
+        member_id = request.POST.get("member-id")
+        member = get_object_or_404(Member, id=member_id)
+        user = member.user
+        user.delete()
+        member.delete()
+        messages.success(request, "Le membre a été supprimé avec succès.")
+
     members_list = Member.objects.all()
     context = {
         'name': 'display_members',
