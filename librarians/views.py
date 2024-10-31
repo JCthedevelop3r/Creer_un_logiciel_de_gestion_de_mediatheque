@@ -102,11 +102,38 @@ def add_media(request):
                 'media_quantity': media_quantity
             })
 
-        media = Media.objects.create(
-            name=media_name,
-            type=media_type,
-            quantity=int(media_quantity)
-        )
+        if media_type == "Livre":
+            media_author = request.POST.get('media-author')
+            book = Media.objects.create(
+                name=media_name,
+                author= media_author,
+                type=media_type,
+                quantity=int(media_quantity)
+            )
+        elif media_type == "CD":
+            media_artist = request.POST.get('media-artist')
+            cd = Media.objects.create(
+                name=media_name,
+                artist= media_artist,
+                type=media_type,
+                quantity=int(media_quantity)
+            )
+        elif media_type == "Jeu de plateau":
+            media_creator = request.POST.get('media-creator')
+            board_game = Media.objects.create(
+                name=media_name,
+                creator= media_creator,
+                type=media_type,
+                quantity=int(media_quantity)
+            )
+        else:
+            media_director = request.POST.get('media-director')
+            dvd = Media.objects.create(
+                name=media_name,
+                director= media_director,
+                type=media_type,
+                quantity=int(media_quantity)
+            )
 
         messages.success(request, "Le média a été ajouté avec succès.")
 

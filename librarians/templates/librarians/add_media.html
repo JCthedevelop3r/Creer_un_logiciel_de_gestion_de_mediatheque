@@ -14,27 +14,32 @@
             </ul>
             {% endif %}
             {% csrf_token %}
+            <div class="media-type-input-container">
+                <h2 class="select-media-type-heading">Sélectionnez le type du média :</h2>
+                <label for="book-type" class="media-type-label">
+                    <span class="book-type">Livre</span>
+                </label>
+                <input type="radio" id="book-type" name=media-type" value="Livre" class="media-type-input" onclick="updateCreatorField('author')">
+                <label for="cd-type" class="media-type-label">
+                    <span class="cd-type">CD</span>
+                </label>
+                <input type="radio" id="cd-type" name=media-type" value="CD" class="media-type-input" onclick="updateCreatorField('artist')">
+                <label for="board-game-type" class="media-type-label">
+                    <span class="board-game-type">Jeu de plateau</span>
+                </label>
+                <input type="radio" id="board-game-type" name=media-type" value="Jeu de plateau" class="media-type-input" onclick="updateCreatorField('creator')">
+                <label for="dvd-type" class="media-type-label">
+                    <span class="dvd-type">DVD</span>
+                </label>
+                <input type="radio" id="dvd-type" name=media-type" value="DVD" class="media-type-input"  onclick="updateCreatorField('director')">
+            </div>
             <div class="media-name-input-container">
                 <label for="media-name" class="media-name">Nom : </label>
                 <input type="text" id="media-name" name="media-name" class="media-name-input">
             </div>
-            <div class="media-type-input-container">
-                <label for="book-type" class="media-type">
-                    <span class="book-type">Livre</span>
-                </label>
-                <input type="radio" id="book-type" name=book-type" class="media-type-input">
-                <label for="cd-type" class="media-type">
-                    <span class="book-type">CD</span>
-                </label>
-                <input type="radio" id="cd-type" name=cd-type" class="media-type-input">
-                <label for="board-game-type" class="media-type">
-                    <span class="book-type">Jeu de plateau</span>
-                </label>
-                <input type="radio" id="board-game-type" name=board-game-type" class="media-type-input">
-                <label for="dvd-type" class="media-type">
-                    <span class="book-type">DVD</span>
-                </label>
-                <input type="radio" id="dvd-type" name=book-type" class="media-type-input">
+            <div class="media-creator-input-container">
+                <label for="media-creator" id="creator-label" class="media-creator-label">Créateur :</label>
+                <input type="text" id="media-creator" name="media-creator" class="media-creator-input">
             </div>
             <div class="quantity-input-container">
                 <label for="media-quantity" class="media-quantity">Quantité : </label>
@@ -44,3 +49,30 @@
         </form>
     </div>
 </main>
+
+<script>
+    function updateCreatorField(creatorType) {
+        const creatorLabel = document.getElementById('creator-label');
+        const creatorInput = document.getElementById('media-creator');
+
+        // Changer le label et le name de l'input selon le type de média
+        switch (creatorType) {
+            case 'author':
+                creatorLabel.innerText = 'Auteur :';
+                creatorInput.name = 'media-author';
+                break;
+            case 'artist':
+                creatorLabel.innerText = 'Artiste :';
+                creatorInput.name = 'media-artist';
+                break;
+            case 'creator':
+                creatorLabel.innerText = 'Créateur :';
+                creatorInput.name = 'media-creator';
+                break;
+            case 'director':
+                creatorLabel.innerText = 'Réalisateur :';
+                creatorInput.name = 'media-director';
+                break;
+        }
+    }
+</script>
