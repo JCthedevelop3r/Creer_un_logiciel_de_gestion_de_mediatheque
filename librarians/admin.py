@@ -20,7 +20,7 @@ class MediaAdmin(admin.ModelAdmin):
 
 
 class BorrowingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'member', 'media', 'borrowing_date']
+    list_display = ['id', 'member', 'media', 'borrowing_date', 'due_date']
 
 
 admin.site.register(Member, MemberAdmin)

@@ -1,7 +1,8 @@
+from datetime import date, timedelta
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
-from datetime import date
+from django.utils import timezone
 from .models_borrowing import Borrowing
 from .models_members import Member
 from .models_medias import Media
@@ -26,16 +27,25 @@ def create_borrowing(request):
 
         member = get_object_or_404(Member, id=member_id)
 
-        # Vérification du nombre d'emprunts existants pour le membre
-        current_borrowings = Borrowing.objects.filter(member=member).count()
+        # Récupération des emprunts en cours du membre
+        current_borrowings = Borrowing.objects.filter(member=member)
 
-        if current_borrowings >= 3:
+        # Vérification si l'un des emprunts en cours a dépassé la date d'échéance
+        # Récupère les emprunts dont la "due_date" est inférieure à la date d'aujourd'hui
+        has_overdue_borrowing = current_borrowings.filter(due_date__lt=timezone.now().date()).exists()
+
+        if current_borrowings.count() >= 3:
             messages.error(request, "Ce membre a déjà atteint le nombre maximum d'emprunts (3).")
+            return redirect('create_borrowing')
+
+        if has_overdue_borrowing:
+            messages.error(request,
+                           "Ce membre a au moins un emprunt en retard et ne peut pas emprunter de nouveaux médias.")
             return redirect('create_borrowing')
 
         for media_id in media_ids:
             media = get_object_or_404(Media, id=media_id)
-            Borrowing.objects.create(member=member, media=media, borrowing_date=date.today())
+            Borrowing.objects.create(member=member, media=media)
 
         messages.success(request, "L'emprunt a été créé avec succès.")
         return redirect('create_borrowing')
