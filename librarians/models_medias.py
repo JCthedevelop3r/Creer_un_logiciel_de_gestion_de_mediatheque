@@ -3,7 +3,7 @@ from django.db import models
 
 class Book(models.Model):
     name = models.CharField(max_length=100)
-    type = models.CharField(default="book")
+    type = models.CharField(max_length=15, default="book")
     author = models.CharField(max_length=100)
     borrowing_date = models.DateField(null=True, blank=True)
     available = models.BooleanField(default=True)
@@ -16,7 +16,7 @@ class Book(models.Model):
 
 class Cd(models.Model):
     name = models.CharField(max_length=100)
-    type = models.CharField(default="cd")
+    type = models.CharField(max_length=15, default="cd")
     artist = models.CharField(max_length=100)
     borrowing_date = models.DateField(null=True, blank=True)
     available = models.BooleanField(default=True)
@@ -29,7 +29,7 @@ class Cd(models.Model):
 
 class Board_game(models.Model):
     name = models.CharField(max_length=100)
-    type = models.CharField(default="board_game")
+    type = models.CharField(max_length=15, default="board_game")
     creator = models.CharField(max_length=100)
     available = models.BooleanField(default=True)
     quantity = models.IntegerField(null=True, blank=True)
@@ -40,7 +40,7 @@ class Board_game(models.Model):
 
 class Dvd(models.Model):
     name = models.CharField(max_length=100)
-    type = models.CharField(default="dvd")
+    type = models.CharField(max_length=15, default="dvd")
     director = models.CharField(max_length=100)
     borrowing_date = models.DateField(null=True, blank=True)
     available = models.BooleanField(default=True)

@@ -15,7 +15,7 @@ class MemberAdmin(admin.ModelAdmin):
     def get_user_email(self, obj):
         return obj.user.email
 
-    # Personnaliser l'en-tête de la colonne dans l'admin
+    # Personnalisation de l'en-tête de la colonne dans l'admin
     get_user_email.short_description = 'Email'
 
 
@@ -36,7 +36,7 @@ class DvdAdmin(admin.ModelAdmin):
 
 
 class BorrowingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'member', 'media', 'borrowing_date', 'due_date']
+    list_display = ['id', 'member', 'book', 'cd', 'board_game', 'dvd', 'borrowing_date', 'due_date']
 
 
 admin.site.register(Member, MemberAdmin)
