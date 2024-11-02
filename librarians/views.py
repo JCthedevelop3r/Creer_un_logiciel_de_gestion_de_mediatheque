@@ -118,9 +118,14 @@ def add_media(request):
     if request.method == 'POST':
         media_name = request.POST['media-name']
         media_type = request.POST['media-type']
+        media_creator = request.POST['media-creator']
         media_quantity = request.POST['media-quantity']
 
-        if Media.objects.filter(name=media_name, type=media_type).exists():
+        if Book.objects.filter(name=media_name, type=media_type, author=media_creator).exists() or Cd.objects.filter(
+                name=media_name, type=media_type, artist=media_creator).exists() or Board_game.objects.filter(
+                name=media_name, type=media_type, creator=media_creator).exists() or Dvd.objects.filter(name=media_name,
+                                                                                                        type=media_type,
+                                                                                                        director=media_creator).exists():
             messages.error(request, "Ce média a déjà été ajouté.")
             return render(request, 'librarians/add_media.html', {
                 'media_name': media_name,
@@ -128,35 +133,31 @@ def add_media(request):
                 'media_quantity': media_quantity
             })
 
-        if media_type == "Livre":
-            media_author = request.POST.get('media-author')
-            book = Media.objects.create(
+        if media_type == "book":
+            Book.objects.create(
                 name=media_name,
-                author= media_author,
+                author=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
-        elif media_type == "CD":
-            media_artist = request.POST.get('media-artist')
-            cd = Media.objects.create(
+        elif media_type == "cd":
+            Cd.objects.create(
                 name=media_name,
-                artist= media_artist,
+                artist=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
-        elif media_type == "Jeu de plateau":
-            media_creator = request.POST.get('media-creator')
-            board_game = Media.objects.create(
+        elif media_type == "board_game":
+            Board_game.objects.create(
                 name=media_name,
-                creator= media_creator,
+                creator=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
         else:
-            media_director = request.POST.get('media-director')
-            dvd = Media.objects.create(
+            Dvd.objects.create(
                 name=media_name,
-                director= media_director,
+                director=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
