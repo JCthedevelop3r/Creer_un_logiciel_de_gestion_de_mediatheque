@@ -3,15 +3,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils import timezone
+from itertools import chain
 from .models_borrowing import Borrowing
 from .models_members import Member
-from .models_medias import Media
+from .models_medias import Book, Cd, Board_game, Dvd
 
 
 # Create your views here.
 def home(request):
     members_list = Member.objects.all()
-    medias_list = Media.objects.all()
+    medias_list = chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
     context = {
         'name': 'home',
         'members_list': members_list,
@@ -43,19 +44,30 @@ def create_borrowing(request):
                            "Ce membre a au moins un emprunt en retard et ne peut pas emprunter de nouveaux médias.")
             return redirect('create_borrowing')
 
+        # Recherche du média sélectionné en fonction de son id en parcourant chaque type de média
         for media_id in media_ids:
-            media = get_object_or_404(Media, id=media_id)
-            Borrowing.objects.create(member=member, media=media)
+            media = None
+            for model in (Book, Cd, Board_game, Dvd):
+                try:
+                    media = model.objects.get(id=media_id)
+                    break
+                except model.DoesNotExist:
+                    continue
+
+            if media:
+                Borrowing.objects.create(member=member, media=media)
 
         messages.success(request, "L'emprunt a été créé avec succès.")
         return redirect('create_borrowing')
 
     members_list = Member.objects.all()
-    medias_list = Media.objects.all()
     context = {
         'name': 'create_borrowing',
         'members_list': members_list,
-        'medias_list': medias_list
+        'books_list': Book.objects.all(),
+        'cds_list': Cd.objects.all(),
+        'board_games_list': Board_game.objects.all(),
+        'dvds_list': Dvd.objects.all(),
     }
     return render(request, 'librarians/create_borrowing.html', context)
 
