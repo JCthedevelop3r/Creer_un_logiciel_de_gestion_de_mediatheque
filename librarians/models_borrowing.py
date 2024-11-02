@@ -1,12 +1,12 @@
 from django.db import models
 from datetime import date, timedelta
 from .models_members import Member
-from .models_medias import Media
+from .models_medias import Book, Cd, Board_game, Dvd
 
 
 class Borrowing(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    media = models.ForeignKey(Media, on_delete=models.CASCADE)
+    media = models.ForeignKey(Book, Cd, Board_game, Dvd, on_delete=models.CASCADE)
     borrowing_date = models.DateField(default=date.today)
     due_date = models.DateField(blank=True, null=True)
 

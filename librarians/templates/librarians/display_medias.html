@@ -18,6 +18,7 @@
                     <form action="" method="post" class="delete-form">
                         {% csrf_token %}
                         <input type="hidden" name="media-id" value="{{ media.id }}">
+                        <input type="hidden" name="media-type" value="{{ media.type }}">
                         <button type="submit" class="delete-btn" aria-label="Supprimer ce média">🗑️</button>
                     </form>
                 </div>

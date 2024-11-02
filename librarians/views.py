@@ -75,7 +75,7 @@ def create_borrowing(request):
 def return_borrowing(request):
     borrowings_list = Borrowing.objects.all()
     members_list = Member.objects.all()
-    medias_list = Media.objects.all()
+    medias_list = chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
     context = {
         'name': 'return_borrowing',
         'members_list': members_list,
@@ -88,14 +88,28 @@ def return_borrowing(request):
 def display_medias(request):
     if request.method == 'POST':
         media_id = request.POST.get("media-id")
-        media = get_object_or_404(Media, id=media_id)
-        media.delete()
-        messages.success(request, "Le média a été supprimé avec succès.")
+        media_type = request.POST.get("media-type")
 
-    medias_list = Media.objects.all()
+        media = None
+        if media_type == "book":
+            media = get_object_or_404(Book, id=media_id)
+        elif media_type == "cd":
+            media = get_object_or_404(Cd, id=media_id)
+        elif media_type == "board_game":
+            media = get_object_or_404(Board_game, id=media_id)
+        elif media_type == "dvd":
+            media = get_object_or_404(Dvd, id=media_id)
+
+        if media:
+            media.delete()
+            messages.success(request, "Le média a été supprimé avec succès.")
+
     context = {
         'name': 'display_medias',
-        'medias_list': medias_list
+        'books_list': Book.objects.all(),
+        'cds_list': Cd.objects.all(),
+        'board_games_list': Board_game.objects.all(),
+        'dvds_list': Dvd.objects.all(),
     }
     return render(request, 'librarians/display_medias.html', context)
 
