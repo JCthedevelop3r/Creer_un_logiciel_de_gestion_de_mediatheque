@@ -77,7 +77,8 @@ def create_borrowing(request):
 def return_borrowing(request):
     borrowings_list = Borrowing.objects.all()
     members_list = Member.objects.all()
-    medias_list = chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
+    medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
+
     context = {
         'name': 'return_borrowing',
         'members_list': members_list,
@@ -106,9 +107,11 @@ def display_medias(request):
             media.delete()
             messages.success(request, "Le média a été supprimé avec succès.")
 
+    medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
+
     context = {
         'name': 'display_medias',
-        'medias_list': chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
+        'medias_list': medias_list,
     }
     return render(request, 'librarians/display_medias.html', context)
 
