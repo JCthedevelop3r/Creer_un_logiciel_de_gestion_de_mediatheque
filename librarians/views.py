@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils import timezone
 from itertools import chain
+from django.contrib.contenttypes.models import ContentType
 from .models_borrowing import Borrowing
 from .models_members import Member
 from .models_medias import Book, Cd, Board_game, Dvd
@@ -52,12 +53,13 @@ def create_borrowing(request):
             for model in (Book, Cd, Board_game, Dvd):
                 try:
                     media = model.objects.get(id=media_id)
+                    content_type = ContentType.objects.get_for_model(model)
                     break
                 except model.DoesNotExist:
                     continue
 
             if media:
-                Borrowing.objects.create(member=member, media=media)
+                Borrowing.objects.create(member=member, content_type=content_type, object_id=media.id)
 
         messages.success(request, "L'emprunt a été créé avec succès.")
         return redirect('create_borrowing')
