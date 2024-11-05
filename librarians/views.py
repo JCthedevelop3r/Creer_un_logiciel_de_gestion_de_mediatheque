@@ -13,13 +13,11 @@ from .models_medias import Book, Cd, Board_game, Dvd
 # Create your views here.
 def home(request):
     members_list = Member.objects.all()
+    medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
     context = {
         'name': 'home',
         'members_list': members_list,
-        'books_list': Book.objects.all(),
-        'cds_list': Cd.objects.all(),
-        'board_games_list': Board_game.objects.all(),
-        'dvds_list': Dvd.objects.all(),
+        'medias_list': medias_list
     }
     return render(request, 'librarians/home.html', context)
 
