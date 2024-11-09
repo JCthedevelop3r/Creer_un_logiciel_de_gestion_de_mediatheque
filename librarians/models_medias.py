@@ -5,7 +5,6 @@ class Media(models.Model):
     name = models.CharField(max_length=100)
     available = models.BooleanField(default=True)
     quantity = models.IntegerField(null=True, blank=True)
-    borrowing_date = models.DateField(null=True, blank=True)
 
     class Meta:
         abstract = True  # Cette classe est abstraite, donc non instanciable directement
