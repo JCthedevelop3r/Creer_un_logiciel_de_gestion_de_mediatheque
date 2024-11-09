@@ -230,5 +230,9 @@ def display_members(request):
 
 
 def update_member(request):
-    context = {'name': 'update_member'}
+    members_list = Member.objects.all()
+    context = {
+        'name': 'update_member',
+        'members_list': members_list
+    }
     return render(request, 'librarians/update_member.html', context)
