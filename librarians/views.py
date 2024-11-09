@@ -10,7 +10,6 @@ from .models_members import Member
 from .models_medias import Book, Cd, Board_game, Dvd
 
 
-# Create your views here.
 def home(request):
     members_list = Member.objects.all()
     medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
@@ -52,12 +51,19 @@ def create_borrowing(request):
                 try:
                     media = model.objects.get(id=media_id)
                     content_type = ContentType.objects.get_for_model(model)
+
+                    if media.quantity is not None and media.quantity > 0:
+                        Borrowing.objects.create(member=member, content_type=content_type, object_id=media.id)
+
+                        media.quantity -= 1
+                        media.save()
+
+                        media.media_unavailable()
+                    else:
+                        messages.error(request, f"Le média {media.name} ({content_type}) n'est pas disponible.")
                     break
                 except model.DoesNotExist:
                     continue
-
-            if media:
-                Borrowing.objects.create(member=member, content_type=content_type, object_id=media.id)
 
         messages.success(request, "L'emprunt a été créé avec succès.")
         return redirect('create_borrowing')
@@ -125,9 +131,9 @@ def add_media(request):
 
         if Book.objects.filter(name=media_name, type=media_type, author=media_creator).exists() or Cd.objects.filter(
                 name=media_name, type=media_type, artist=media_creator).exists() or Board_game.objects.filter(
-                name=media_name, type=media_type, creator=media_creator).exists() or Dvd.objects.filter(name=media_name,
-                                                                                                        type=media_type,
-                                                                                                        director=media_creator).exists():
+            name=media_name, type=media_type, creator=media_creator).exists() or Dvd.objects.filter(name=media_name,
+                                                                                                    type=media_type,
+                                                                                                    director=media_creator).exists():
             messages.error(request, "Ce média a déjà été ajouté.")
             return render(request, 'librarians/add_media.html', {
                 'media_name': media_name,

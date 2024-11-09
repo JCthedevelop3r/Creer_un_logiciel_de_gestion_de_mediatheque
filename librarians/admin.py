@@ -20,11 +20,11 @@ class MemberAdmin(admin.ModelAdmin):
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['name', 'author', 'borrowing_date', 'available', 'borrowers_number', 'quantity']
+    list_display = ['name', 'author', 'borrowing_date', 'available', 'quantity']
 
 
 class CdAdmin(admin.ModelAdmin):
-    list_display = ['name', 'artist', 'borrowing_date', 'available', 'borrowers_number', 'quantity']
+    list_display = ['name', 'artist', 'borrowing_date', 'available', 'quantity']
 
 
 class BoardGameAdmin(admin.ModelAdmin):
@@ -32,7 +32,7 @@ class BoardGameAdmin(admin.ModelAdmin):
 
 
 class DvdAdmin(admin.ModelAdmin):
-    list_display = ['name', 'director', 'borrowing_date', 'available', 'borrowers_number', 'quantity']
+    list_display = ['name', 'director', 'borrowing_date', 'available', 'quantity']
 
 
 class BorrowingAdmin(admin.ModelAdmin):
