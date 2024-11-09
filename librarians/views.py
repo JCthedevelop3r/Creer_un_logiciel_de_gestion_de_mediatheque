@@ -230,6 +230,24 @@ def display_members(request):
 
 
 def update_member(request):
+    if request.method == 'POST':
+        member_id = request.POST.get("member-id")
+        member = get_object_or_404(Member, id=member_id)
+
+        member.user.first_name = request.POST.get('first-name')
+        member.user.last_name = request.POST.get('last-name')
+        member.user.email = request.POST.get('e-mail')
+        member.date_of_birth = request.POST.get('date-of-birth')
+        member.place_of_birth = request.POST.get('place-of-birth')
+        member.city_of_residence = request.POST.get('city-of-residence')
+        member.phone_number = request.POST.get('phone-number')
+
+        member.user.save()
+        member.save()
+
+        messages.success(request, "Le membre a été mis à jour avec succès.")
+        return redirect('update_member')
+
     members_list = Member.objects.all()
     context = {
         'name': 'update_member',

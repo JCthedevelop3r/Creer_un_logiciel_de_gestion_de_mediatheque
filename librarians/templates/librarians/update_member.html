@@ -9,9 +9,16 @@
                 Mettre à jour
             </h1>
             <form action="" method="post" class="update-member-form">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    {% if message.tags %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 {% csrf_token %}
-
-                <!-- Liste déroulante de sélection de membre -->
                 <select name="member" id="update-member-select" onchange="updateMemberInfo()">
                     <option value="">Sélectionnez un membre</option>
                     {% for member in members_list %}
@@ -24,47 +31,39 @@
                             data-city-of-residence="{{ member.city_of_residence }}"
                             data-phone-number="{{ member.phone_number }}"
                             data-email="{{ member.user.email }}">
-                        {{ member.user.first_name }} {{ member.user.last_name }}
+                        {{ member.user }}
                     </option>
                     {% endfor %}
                 </select>
-
-                <!-- Champs d'entrée pour afficher les informations du membre sélectionné -->
+                <input type="hidden" id="member-id" name="member-id">
                 <div class="member-last-name-input-container">
                     <label for="last-name" class="last-name">Nom : </label>
-                    <input type="text" id="last-name" class="last-name-input">
+                    <input type="text" id="last-name" class="last-name-input" name="last-name">
                 </div>
-
                 <div class="member-first-name-input-container">
                     <label for="first-name" class="first-name">Prénom : </label>
-                    <input type="text" id="first-name" class="first-name-input">
+                    <input type="text" id="first-name" class="first-name-input" name="first-name">
                 </div>
-
                 <div class="date-of-birth-input-container">
                     <label for="date-of-birth" class="date-of-birth">Date de naissance : </label>
-                    <input type="text" id="date-of-birth" class="date-of-birth-input">
+                    <input type="text" id="date-of-birth" class="date-of-birth-input" name="date-of-birth">
                 </div>
-
                 <div class="place-of-birth-input-container">
                     <label for="place-of-birth" class="place-of-birth">Lieu de naissance : </label>
-                    <input type="text" id="place-of-birth" class="place-of-birth-input">
+                    <input type="text" id="place-of-birth" class="place-of-birth-input" name="place-of-birth">
                 </div>
-
                 <div class="city-of-residence-input-container">
                     <label for="city-of-residence" class="city-of-residence">Ville de résidence : </label>
-                    <input type="text" id="city-of-residence" class="city-of-residence-input">
+                    <input type="text" id="city-of-residence" class="city-of-residence-input" name="city-of-residence">
                 </div>
-
                 <div class="phone-number-input-container">
                     <label for="phone-number" class="phone-number">Numéro de téléphone : </label>
-                    <input type="text" id="phone-number" class="phone-number-input">
+                    <input type="text" id="phone-number" class="phone-number-input" name="phone-number">
                 </div>
-
                 <div class="e-mail-input-container">
                     <label for="e-mail" class="e-mail">Adresse mail : </label>
-                    <input type="text" id="e-mail" class="e-mail-input">
+                    <input type="text" id="e-mail" class="e-mail-input" name="e-mail">
                 </div>
-
                 <input type="submit" value="Valider" class="submit-btn">
             </form>
         </div>
@@ -83,6 +82,7 @@
       const cityOfResidenceInput = document.getElementById("city-of-residence");
       const phoneNumberInput = document.getElementById("phone-number");
       const emailInput = document.getElementById("e-mail");
+      const memberIdInput = document.getElementById("member-id");
 
       lastNameInput.value = selectedOption.getAttribute("data-last-name") || "";
       firstNameInput.value = selectedOption.getAttribute("data-first-name") || "";
@@ -91,5 +91,6 @@
       cityOfResidenceInput.value = selectedOption.getAttribute("data-city-of-residence") || "";
       phoneNumberInput.value = selectedOption.getAttribute("data-phone-number") || "";
       emailInput.value = selectedOption.getAttribute("data-email") || "";
+      memberIdInput.value = selectedOption.getAttribute("value") || "";
     }
 </script>
