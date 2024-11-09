@@ -58,6 +58,9 @@ def create_borrowing(request):
                         media.quantity -= 1
                         media.save()
 
+                        member.borrowings_number += 1
+                        member.save()
+
                         media.media_unavailable()
                     else:
                         messages.error(request, f"Le média {media.name} ({content_type}) n'est pas disponible.")
