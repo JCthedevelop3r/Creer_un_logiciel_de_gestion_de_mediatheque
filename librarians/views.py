@@ -1,4 +1,3 @@
-from datetime import date, timedelta
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -7,7 +6,7 @@ from itertools import chain
 from django.contrib.contenttypes.models import ContentType
 from .models_borrowing import Borrowing
 from .models_members import Member
-from .models_medias import Book, Cd, Board_game, Dvd
+from .models_medias import Book, Cd, Board_game, Dvd, Media
 
 
 def home(request):
@@ -84,6 +83,28 @@ def create_borrowing(request):
 
 
 def return_borrowing(request):
+    if request.method == 'POST':
+        borrowing_ids = request.POST.getlist('borrowing_ids')
+
+        for borrowing_id in borrowing_ids:
+            borrowing = get_object_or_404(Borrowing, id=borrowing_id)
+            member_id = request.POST.get(f'member_id_{borrowing_id}')
+            member = get_object_or_404(Member, id=member_id)
+            media = borrowing.media
+
+            if media:
+                member.borrowings_number -= 1
+                member.save()
+
+                media.quantity += 1
+                media.save()
+
+                media.media_unavailable()
+                borrowing.delete()
+
+                messages.success(request, "Les emprunts ont été rentrés avec succès.")
+                return redirect('return_borrowing')
+
     borrowings_list = Borrowing.objects.all()
     members_list = Member.objects.all()
     medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
