@@ -3,6 +3,7 @@ from django.urls import reverse
 from librarians.models_members import Member
 from django.contrib.messages import get_messages
 
+
 @pytest.mark.django_db
 def test_create_member(client):
     # Données simulées pour le formulaire
