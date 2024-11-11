@@ -17,7 +17,7 @@ def test_create_member(client):
         'phone-number': '0123456789',
     }
 
-    # Envoi de la requête et suivi de la redirection (302) après le message de confirmation
+    # Envoi de la requête POST et suivi de la redirection (302) après le message de confirmation
     response = client.post(reverse('create_member'), data, follow=True)
 
     # Vérifie que la requête a bien été suivie jusqu'à un statut de succès
