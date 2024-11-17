@@ -53,12 +53,13 @@
                     {% endfor %}
 
                     <h3>Jeux de plateau</h3>
+                    <p class="info-board_games">Les jeux de plateau ne sont pas disponible à l'emprunt</p>
                     {% for board_game in board_games_list %}
                         <label for="media-name-{{ board_game.id }}" class="media-name-label">
                             <span class="media-name">{{ board_game.name }}</span>
                             <span class="media-type">Jeu de plateau</span>
                         </label>
-                        <input type="checkbox" name="media_ids" id="media-name-{{ board_game.id }}" value="{{ board_game.id }}"/>
+                        <input type="checkbox" name="media_ids" id="media-name-{{ board_game.id }}" value="{{ board_game.id }}" disabled/>
                     {% empty %}
                         <p>Aucun jeu de plateau disponible.</p>
                     {% endfor %}
