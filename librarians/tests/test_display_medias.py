@@ -4,7 +4,7 @@ from librarians.models_medias import Media, Book, Cd, Board_game, Dvd
 
 
 @pytest.fixture
-def multiple_medias():
+def multiple_medias(db):
     book = Book.objects.create(
         name='Le Seigneur des anneaux',
         author='J. R. R. Tolkien',
@@ -32,3 +32,21 @@ def multiple_medias():
         type='dvd',
         quantity=int('2')
     )
+
+    return [book, cd, board_game, dvd]
+
+
+@pytest.mark.django_db
+def test_display_medias(client, multiple_medias):
+    response = client.get(reverse('display_medias'))
+
+    assert response.status_code == 200
+
+    assert "Le Seigneur des anneaux" in response.content.decode()
+    assert "book" in response.content.decode()
+    assert "Baby" in response.content.decode()
+    assert "cd" in response.content.decode()
+    assert "Monopoly" in response.content.decode()
+    assert "board_game" in response.content.decode()
+    assert "Le Roi lion" in response.content.decode()
+    assert "dvd" in response.content.decode()
