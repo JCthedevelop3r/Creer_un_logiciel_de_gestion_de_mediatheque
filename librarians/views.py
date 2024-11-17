@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -43,29 +44,32 @@ def create_borrowing(request):
                            "Ce membre a au moins un emprunt en retard et ne peut pas emprunter de nouveaux médias.")
             return redirect('create_borrowing')
 
-        # Recherche du média sélectionné en fonction de son id en parcourant chaque type de média
+        all_media = {
+            **{book.id: book for book in Book.objects.all()},
+            **{cd.id: cd for cd in Cd.objects.all()},
+            **{board_game.id: board_game for board_game in Board_game.objects.all()},
+            **{dvd.id: dvd for dvd in Dvd.objects.all()},
+        }
+
         for media_id in media_ids:
-            media = None
-            for model in (Book, Cd, Board_game, Dvd):
-                try:
-                    media = model.objects.get(id=media_id)
-                    content_type = ContentType.objects.get_for_model(model)
-
-                    if media.quantity is not None and media.quantity > 0:
-                        Borrowing.objects.create(member=member, content_type=content_type, object_id=media.id)
-
-                        media.quantity -= 1
-                        media.save()
-
-                        member.borrowings_number += 1
-                        member.save()
-
-                        media.media_unavailable()
-                    else:
-                        messages.error(request, f"Le média {media.name} ({content_type}) n'est pas disponible.")
-                    break
-                except model.DoesNotExist:
-                    continue
+            media = all_media.get(int(media_id))
+            if media:
+                content_type = ContentType.objects.get_for_model(media)
+                if media.quantity > 0:
+                    Borrowing.objects.create(
+                        member=member,
+                        content_type=content_type,
+                        object_id=media.id,
+                        due_date = timezone.now().date() + timedelta(days=7)
+                    )
+                    media.quantity -= 1
+                    media.save()
+                    member.borrowings_number += 1
+                    member.save()
+                else:
+                    messages.error(request, f"Le média {media.name} ({content_type}) n'est pas disponible.")
+            else:
+                messages.error(request, f"Le média avec l'id {media_id} est introuvable.")
 
         messages.success(request, "L'emprunt a été créé avec succès.")
         return redirect('create_borrowing')

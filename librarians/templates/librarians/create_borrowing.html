@@ -34,6 +34,7 @@
                     {% for book in books_list %}
                         <label for="media-name-{{ book.id }}" class="media-name-label">
                             <span class="media-name">{{ book.name }}</span>
+                            <span class="media-creator">{{ book.author }}</span>
                             <span class="media-type">Livre</span>
                         </label>
                         <input type="checkbox" name="media_ids" id="media-name-{{ book.id }}" value="{{ book.id }}"/>
@@ -45,6 +46,7 @@
                     {% for cd in cds_list %}
                         <label for="media-name-{{ cd.id }}" class="media-name-label">
                             <span class="media-name">{{ cd.name }}</span>
+                            <span class="media-creator">{{ cd.artist }}</span>
                             <span class="media-type">CD</span>
                         </label>
                         <input type="checkbox" name="media_ids" id="media-name-{{ cd.id }}" value="{{ cd.id }}"/>
@@ -57,6 +59,7 @@
                     {% for board_game in board_games_list %}
                         <label for="media-name-{{ board_game.id }}" class="media-name-label">
                             <span class="media-name">{{ board_game.name }}</span>
+                            <span class="media-creator">{{ board_game.creator }}</span>
                             <span class="media-type">Jeu de plateau</span>
                         </label>
                         <input type="checkbox" name="media_ids" id="media-name-{{ board_game.id }}" value="{{ board_game.id }}" disabled/>
@@ -68,6 +71,7 @@
                     {% for dvd in dvds_list %}
                         <label for="media-name-{{ dvd.id }}" class="media-name-label">
                             <span class="media-name">{{ dvd.name }}</span>
+                            <span class="media-creator">{{ dvd.director }}</span>
                             <span class="media-type">DVD</span>
                         </label>
                         <input type="checkbox" name="media_ids" id="media-name-{{ dvd.id }}" value="{{ dvd.id }}"/>
