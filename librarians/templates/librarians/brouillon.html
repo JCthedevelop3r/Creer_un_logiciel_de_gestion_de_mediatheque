@@ -1,0 +1,31 @@
+<main>
+    <div class="display-medias-container">
+        <div class="content-display-medias-container">
+            <h1 class="media-list-heading">Liste médias</h1>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="media-list">
+                {% for media in medias_list %}
+                <div id="media-{{ media.id }}" class="media">
+                    <span class="media-name">{{ media.name }}</span>
+                    <span class="media-type">{{ media.type }}</span>
+                    <span class="quantity">{{ media.quantity }}</span>
+                    <form action="" method="post" class="delete-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="media-id" value="{{ media.id }}">
+                        <input type="hidden" name="media-type" value="{{ media.type }}">
+                        <button type="submit" class="delete-btn" aria-label="Supprimer ce média">🗑️</button>
+                    </form>
+                </div>
+                {% empty %}
+                <p>Aucun média trouvé.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
