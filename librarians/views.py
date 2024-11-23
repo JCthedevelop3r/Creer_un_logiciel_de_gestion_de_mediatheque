@@ -127,6 +127,9 @@ def display_medias(request):
         media_id = request.POST.get("media-id")
         media_type = request.POST.get("media-type")
 
+        print("Media ID :", media_id)
+        print("Media Type :", media_type)
+
         media = None
         if media_type == "book":
             media = get_object_or_404(Book, id=media_id)
@@ -137,9 +140,14 @@ def display_medias(request):
         elif media_type == "dvd":
             media = get_object_or_404(Dvd, id=media_id)
 
+        print("Media trouvé :", media)
+
         if media:
             media.delete()
             messages.success(request, "Le média a été supprimé avec succès.")
+            print("Message de succès ajouté.")
+        else:
+            print("Aucun média trouvé.")
 
     medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
 
