@@ -30,7 +30,7 @@
                         value="{{ member.id }}"
                         data-last-name="{{ member.user.last_name }}"
                         data-first-name="{{ member.user.first_name }}"
-                        data-date-of-birth="{{ member.date_of_birth }}"
+                        data-date-of-birth="{{ member.date_of_birth|date:'Y-m-d' }}"
                         data-place-of-birth="{{ member.place_of_birth }}"
                         data-city-of-residence="{{ member.city_of_residence }}"
                         data-phone-number="{{ member.phone_number }}"
