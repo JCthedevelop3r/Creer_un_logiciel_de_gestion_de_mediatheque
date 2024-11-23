@@ -1,54 +1,62 @@
-<main>
-    <div class="add-media-container">
-        <div class="content-add-media-container">
-            <h1 class="add-media-heading">Ajouter un média</h1>
-        </div>
-        <form action="" method="post" class="add-media-form">
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                {% if message.tags %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% csrf_token %}
-            <div class="media-type-input-container">
-                <h2 class="select-media-type-heading">Sélectionnez le type du média :</h2>
-                <label for="book-type" class="media-type-label">
-                    <span class="book-type">Livre</span>
-                </label>
-                <input type="radio" id="book-type" name="media-type" value="book" class="media-type-input" onclick="updateCreatorField('author')">
-                <label for="cd-type" class="media-type-label">
-                    <span class="cd-type">CD</span>
-                </label>
-                <input type="radio" id="cd-type" name="media-type" value="cd" class="media-type-input" onclick="updateCreatorField('artist')">
-                <label for="board-game-type" class="media-type-label">
-                    <span class="board-game-type">Jeu de plateau</span>
-                </label>
-                <input type="radio" id="board-game-type" name="media-type" value="board_game" class="media-type-input" onclick="updateCreatorField('creator')">
-                <label for="dvd-type" class="media-type-label">
-                    <span class="dvd-type">DVD</span>
-                </label>
-                <input type="radio" id="dvd-type" name="media-type" value="dvd" class="media-type-input"  onclick="updateCreatorField('director')">
-            </div>
-            <div class="media-name-input-container">
-                <label for="media-name" class="media-name">Nom : </label>
-                <input type="text" id="media-name" name="media-name" class="media-name-input">
-            </div>
-            <div class="media-creator-input-container">
-                <label for="media-creator" id="creator-label" class="media-creator-label">Créateur :</label>
-                <input type="text" id="media-creator" name="media-creator" class="media-creator-input">
-            </div>
-            <div class="quantity-input-container">
-                <label for="media-quantity" class="media-quantity">Quantité : </label>
-                <input type="text" id="media-quantity" name="media-quantity" class="media-quantity-input">
-            </div>
-            <input type="submit" value="Ajouter" class="submit-btn">
-        </form>
+{% extends 'base.html' %}
+
+{% block title %}Ajouter un média{% endblock %}
+
+{% block content %}
+<div class="add-media-container">
+    <div class="content-add-media-container">
+        <h1 class="add-media-heading">Ajouter un média</h1>
     </div>
-</main>
+    <form action="" method="post" class="add-media-form">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            {% if message.tags %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% csrf_token %}
+        <div class="media-type-input-container">
+            <h2 class="select-media-type-heading">Sélectionnez le type du média :</h2>
+            <label for="book-type" class="media-type-label">
+                <span class="book-type">Livre</span>
+            </label>
+            <input type="radio" id="book-type" name="media-type" value="book" class="media-type-input"
+                   onclick="updateCreatorField('author')">
+            <label for="cd-type" class="media-type-label">
+                <span class="cd-type">CD</span>
+            </label>
+            <input type="radio" id="cd-type" name="media-type" value="cd" class="media-type-input"
+                   onclick="updateCreatorField('artist')">
+            <label for="board-game-type" class="media-type-label">
+                <span class="board-game-type">Jeu de plateau</span>
+            </label>
+            <input type="radio" id="board-game-type" name="media-type" value="board_game" class="media-type-input"
+                   onclick="updateCreatorField('creator')">
+            <label for="dvd-type" class="media-type-label">
+                <span class="dvd-type">DVD</span>
+            </label>
+            <input type="radio" id="dvd-type" name="media-type" value="dvd" class="media-type-input"
+                   onclick="updateCreatorField('director')">
+        </div>
+        <div class="media-name-input-container">
+            <label for="media-name" class="media-name">Nom : </label>
+            <input type="text" id="media-name" name="media-name" class="media-name-input">
+        </div>
+        <div class="media-creator-input-container">
+            <label for="media-creator" id="creator-label" class="media-creator-label">Créateur :</label>
+            <input type="text" id="media-creator" name="media-creator" class="media-creator-input">
+        </div>
+        <div class="quantity-input-container">
+            <label for="media-quantity" class="media-quantity">Quantité : </label>
+            <input type="text" id="media-quantity" name="media-quantity" class="media-quantity-input">
+        </div>
+        <input type="submit" value="Ajouter" class="submit-btn">
+    </form>
+</div>
+{% endblock %}
 
 <script>
     function updateCreatorField(creatorType) {

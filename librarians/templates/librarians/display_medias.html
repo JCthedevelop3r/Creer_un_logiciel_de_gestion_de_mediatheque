@@ -1,4 +1,8 @@
-<main>
+{% extends 'base.html' %}
+
+{% block title %}Afficher les médias{% endblock %}
+
+{% block content %}
     <div class="display-medias-container">
         <div class="content-display-medias-container">
             <h1 class="media-list-heading">Liste médias</h1>
@@ -40,4 +44,4 @@
             </table>
         </div>
     </div>
-</main>
+{% endblock %}}

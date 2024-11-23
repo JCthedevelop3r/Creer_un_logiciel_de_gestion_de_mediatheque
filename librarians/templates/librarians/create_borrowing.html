@@ -1,162 +1,166 @@
-<main>
-    <div class="create-borrowing-container">
-        <div class="content-create-borrowing-container">
-            <h1 class="create-borrowing-heading">Créer un emprunt</h1>
-            <form action="" method="post">  <!-- Enveloppez tout le contenu dans un formulaire -->
-                {% csrf_token %}
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    {% if message.tags %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
+{% extends 'base.html' %}
+
+{% block title %}Créer un emprunt{% endblock %}
+
+{% block content %}
+<div class="create-borrowing-container">
+    <div class="content-create-borrowing-container">
+        <h1 class="create-borrowing-heading">Créer un emprunt</h1>
+        <form action="" method="post">  <!-- Enveloppez tout le contenu dans un formulaire -->
+            {% csrf_token %}
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                {% if message.tags %}
+                <li class="{{ message.tags }}">{{ message }}</li>
                 {% endif %}
-                <div class="select-member-container">
-                    <h2 class="select-member-heading">Sélectionnez un membre :</h2>
-                    {% for member in members_list %}
-                    <label for="member-name-{{ member.id }}" class="member-name-label">
-                        <span class="first-name">{{ member.user.first_name }}</span>
-                        <span class="last-name">{{ member.user.last_name }}</span>
-                    </label>
-                    <input type="radio" name="member_id" id="member-name-{{ member.id }}" value="{{ member.id }}"
-                           required/>
-                    {% empty %}
-                    <p>Il n'y a actuellement aucun membre.</p>
-                    {% endfor %}
-                </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="select-member-container">
+                <h2 class="select-member-heading">Sélectionnez un membre :</h2>
+                {% for member in members_list %}
+                <label for="member-name-{{ member.id }}" class="member-name-label">
+                    <span class="first-name">{{ member.user.first_name }}</span>
+                    <span class="last-name">{{ member.user.last_name }}</span>
+                </label>
+                <input type="radio" name="member_id" id="member-name-{{ member.id }}" value="{{ member.id }}"
+                       required/>
+                {% empty %}
+                <p>Il n'y a actuellement aucun membre.</p>
+                {% endfor %}
+            </div>
 
-                <div class="select-media-container">
-                    <h2 class="select-media-heading">Sélectionnez un média :</h2>
+            <div class="select-media-container">
+                <h2 class="select-media-heading">Sélectionnez un média :</h2>
 
-                    <h3>Livres</h3>
-                    <table class="book-table">
-                        <thead class="book-table-head">
-                        <tr class="book-table-headings-row">
-                            <th class="th-media-name">Nom</th>
-                            <th class="th-media-creator">Auteur</th>
-                            <th class="th-media-checkbox">Sélectionner</th>
-                        </tr>
-                        </thead>
-                        {% for book in books_list %}
-                        <tbody class="book-tbody">
-                        <tr class="book-table-tbody-row">
-                            <label for="media-name-{{ book.id }}" class="media-name-label">
-                                <td class="media-name">{{ book.name }}</td>
-                                <td class="media-creator">{{ book.author }}</td>
-                            </label>
-                            <td class="media-checkbox">
-                                <input type="checkbox"
-                                       name="media_ids"
-                                       id="media-name-{{ book.id }}"
-                                       value="{{ book.id }}"
-                                />
-                            </td>
-                            {% empty %}
-                            <p>Aucun livre disponible.</p>
-                            {% endfor %}
-                        </tr>
-                        </tbody>
-                    </table>
+                <h3>Livres</h3>
+                <table class="book-table">
+                    <thead class="book-table-head">
+                    <tr class="book-table-headings-row">
+                        <th class="th-media-name">Nom</th>
+                        <th class="th-media-creator">Auteur</th>
+                        <th class="th-media-checkbox">Sélectionner</th>
+                    </tr>
+                    </thead>
+                    {% for book in books_list %}
+                    <tbody class="book-tbody">
+                    <tr class="book-table-tbody-row">
+                        <label for="media-name-{{ book.id }}" class="media-name-label">
+                            <td class="media-name">{{ book.name }}</td>
+                            <td class="media-creator">{{ book.author }}</td>
+                        </label>
+                        <td class="media-checkbox">
+                            <input type="checkbox"
+                                   name="media_ids"
+                                   id="media-name-{{ book.id }}"
+                                   value="{{ book.id }}"
+                            />
+                        </td>
+                        {% empty %}
+                        <p>Aucun livre disponible.</p>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
 
-                    <h3>CD</h3>
-                    <table class="cd-table">
-                        <thead class="cd-table-head">
-                        <tr class="cd-table-headings-row">
-                            <th class="th-media-name">Nom</th>
-                            <th class="th-media-creator">Artiste</th>
-                            <th class="th-media-checkbox">Sélectionner</th>
-                        </tr>
-                        </thead>
-                        {% for cd in cds_list %}
-                        <tbody class="cd-tbody">
-                        <tr class="cd-tbody-row">
-                            <label for="media-name-{{ cd.id }}" class="media-name-label">
-                                <td class="media-name">{{ cd.name }}</td>
-                                <td class="media-creator">{{ cd.artist }}</td>
-                            </label>
-                            <td class="media-checkbox">
-                                <input type="checkbox"
-                                       name="media_ids"
-                                       id="media-name-{{ cd.id }}"
-                                       value="{{ cd.id }}"
-                                />
-                            </td>
-                            {% empty %}
-                            <p>Aucun CD disponible.</p>
-                            {% endfor %}
-                        </tr>
-                        </tbody>
-                    </table>
+                <h3>CD</h3>
+                <table class="cd-table">
+                    <thead class="cd-table-head">
+                    <tr class="cd-table-headings-row">
+                        <th class="th-media-name">Nom</th>
+                        <th class="th-media-creator">Artiste</th>
+                        <th class="th-media-checkbox">Sélectionner</th>
+                    </tr>
+                    </thead>
+                    {% for cd in cds_list %}
+                    <tbody class="cd-tbody">
+                    <tr class="cd-tbody-row">
+                        <label for="media-name-{{ cd.id }}" class="media-name-label">
+                            <td class="media-name">{{ cd.name }}</td>
+                            <td class="media-creator">{{ cd.artist }}</td>
+                        </label>
+                        <td class="media-checkbox">
+                            <input type="checkbox"
+                                   name="media_ids"
+                                   id="media-name-{{ cd.id }}"
+                                   value="{{ cd.id }}"
+                            />
+                        </td>
+                        {% empty %}
+                        <p>Aucun CD disponible.</p>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
 
-                    <h3>Jeux de plateau</h3>
-                    <table class="board-games-table">
-                        <p class="info-board-games">Les jeux de plateau ne sont pas disponibles à l'emprunt</p>
-                        <thead class="board-games-table-head">
-                        <tr class="board-games-table-headings-row">
-                            <th class="th-media-name">Nom</th>
-                            <th class="th-media-creator">Créateur</th>
-                            <th class="th-media-checkbox">Sélectionner</th>
-                        </tr>
-                        </thead>
-                        {% for board_game in board_games_list %}
-                        <tbody class="board-games-tbody">
-                        <tr class="bg-tbody-row">
-                            <label for="media-name-{{ board_game.id }}" class="media-name-label">
-                                <td class="media-name">{{ board_game.name }}</td>
-                                <td class="media-creator">{{ board_game.creator }}</td>
-                            </label>
-                            <td class="media-checkbox">
-                                <input type="checkbox"
-                                       name="media_ids"
-                                       id="media-name-{{ board_game.id }}"
-                                       value="{{ board_game.id }}"
-                                       disabled
-                                />
-                            </td>
-                            {% empty %}
-                            <p>Aucun jeu de plateau disponible.</p>
-                            {% endfor %}
-                        </tr>
-                        </tbody>
-                    </table>
+                <h3>Jeux de plateau</h3>
+                <table class="board-games-table">
+                    <p class="info-board-games">Les jeux de plateau ne sont pas disponibles à l'emprunt</p>
+                    <thead class="board-games-table-head">
+                    <tr class="board-games-table-headings-row">
+                        <th class="th-media-name">Nom</th>
+                        <th class="th-media-creator">Créateur</th>
+                        <th class="th-media-checkbox">Sélectionner</th>
+                    </tr>
+                    </thead>
+                    {% for board_game in board_games_list %}
+                    <tbody class="board-games-tbody">
+                    <tr class="bg-tbody-row">
+                        <label for="media-name-{{ board_game.id }}" class="media-name-label">
+                            <td class="media-name">{{ board_game.name }}</td>
+                            <td class="media-creator">{{ board_game.creator }}</td>
+                        </label>
+                        <td class="media-checkbox">
+                            <input type="checkbox"
+                                   name="media_ids"
+                                   id="media-name-{{ board_game.id }}"
+                                   value="{{ board_game.id }}"
+                                   disabled
+                            />
+                        </td>
+                        {% empty %}
+                        <p>Aucun jeu de plateau disponible.</p>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
 
-                    <h3>DVD</h3>
-                    <table class="dvd-table">
-                        <thead class="dvd-table-head">
-                        <tr class="dvd-table-headings-row">
-                            <th class="th-media-name">Nom</th>
-                            <th class="th-media-creator">Réalisateur</th>
-                            <th class="th-media-checkbox">Sélectionner</th>
-                        </tr>
-                        </thead>
-                        {% for dvd in dvds_list %}
-                        <tbody>
-                        <tr>
-                            <label for="media-name-{{ dvd.id }}" class="media-name-label">
-                                <td class="media-name">{{ dvd.name }}</td>
-                                <td class="media-creator">{{ dvd.director }}</td>
-                            </label>
-                            <td class="media-checkbox">
-                                <input type="checkbox"
-                                       name="media_ids"
-                                       id="media-name-{{ dvd.id }}"
-                                       value="{{ dvd.id }}"
-                                />
-                            </td>
-                            {% empty %}
-                            <p>Aucun DVD disponible.</p>
-                            {% endfor %}
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <h3>DVD</h3>
+                <table class="dvd-table">
+                    <thead class="dvd-table-head">
+                    <tr class="dvd-table-headings-row">
+                        <th class="th-media-name">Nom</th>
+                        <th class="th-media-creator">Réalisateur</th>
+                        <th class="th-media-checkbox">Sélectionner</th>
+                    </tr>
+                    </thead>
+                    {% for dvd in dvds_list %}
+                    <tbody>
+                    <tr>
+                        <label for="media-name-{{ dvd.id }}" class="media-name-label">
+                            <td class="media-name">{{ dvd.name }}</td>
+                            <td class="media-creator">{{ dvd.director }}</td>
+                        </label>
+                        <td class="media-checkbox">
+                            <input type="checkbox"
+                                   name="media_ids"
+                                   id="media-name-{{ dvd.id }}"
+                                   value="{{ dvd.id }}"
+                            />
+                        </td>
+                        {% empty %}
+                        <p>Aucun DVD disponible.</p>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <div class="submit-btn-container">
-                    <input type="submit" value="Créer" class="submit-btn"/>
-                </div>
-            </form>
-        </div>
+            <div class="submit-btn-container">
+                <input type="submit" value="Créer" class="submit-btn"/>
+            </div>
+        </form>
     </div>
-</main>
+</div>
+{% endblock %}

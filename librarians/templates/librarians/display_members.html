@@ -1,52 +1,57 @@
+{% extends 'base.html' %}
 
-    <div class="display-members-container">
-        <div class="content-display-members-container">
-            <h1 class="member-list-heading">Liste membres</h1>
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            <div class="member-list">
-                {% for member in members_list %}
-                <table id="member-{{ member.id }}" class="member">
-                    <thead class="member-table-head">
-                        <tr class="member-table-headings-row">
-                            <th class="th-first-name">Prénom</th>
-                            <th class="th-last-name">Nom</th>
-                            <th class="th-email">Mail</th>
-                            <th class="th-date-of-birth">Date de naissance</th>
-                            <th class="th-place-of-birth">Lieu de naissance</th>
-                            <th class="th-city-of-residence">Ville de résidence</th>
-                            <th class="th-phone-number">Numéro de téléphone</th>
-                            <th class="th-deletion">Supprimer</th>
-                        </tr>
-                    </thead>
-                    <tbody class="member-table-body">
-                        <tr class="member-table-body-row">
-                            <td class="first-name">{{ member.user.first_name }}</td>
-                            <td class="last-name">{{ member.user.last_name }}</td>
-                            <td class="email">{{ member.user.email }}</td>
-                            <td class="date-of-birth">{{ member.date_of_birth }}</td>
-                            <td class="place-of-birth">{{ member.place_of_birth }}</td>
-                            <td class="city-of-residence">{{ member.city_of_residence }}</td>
-                            <td class="phone-number">{{ member.phone_number }}</td>
-                            <td class="deletion">
-                                <form action="" method="post" class="delete-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="member-id" value="{{ member.id }}">
-                                <button type="submit" class="delete-btn" aria-label="Supprimer ce membre">🗑️</button>
-                            </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                {% empty %}
-                <p>Aucun membre trouvé.</p>
-                {% endfor %}
-            </div>
+{% block title %}Afficher les membres{% endblock %}
+
+{% block content %}
+<div class="display-members-container">
+    <div class="content-display-members-container">
+        <h1 class="member-list-heading">Liste membres</h1>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="member-list">
+            {% for member in members_list %}
+            <table id="member-{{ member.id }}" class="member">
+                <thead class="member-table-head">
+                <tr class="member-table-headings-row">
+                    <th class="th-first-name">Prénom</th>
+                    <th class="th-last-name">Nom</th>
+                    <th class="th-email">Mail</th>
+                    <th class="th-date-of-birth">Date de naissance</th>
+                    <th class="th-place-of-birth">Lieu de naissance</th>
+                    <th class="th-city-of-residence">Ville de résidence</th>
+                    <th class="th-phone-number">Numéro de téléphone</th>
+                    <th class="th-deletion">Supprimer</th>
+                </tr>
+                </thead>
+                <tbody class="member-table-body">
+                <tr class="member-table-body-row">
+                    <td class="first-name">{{ member.user.first_name }}</td>
+                    <td class="last-name">{{ member.user.last_name }}</td>
+                    <td class="email">{{ member.user.email }}</td>
+                    <td class="date-of-birth">{{ member.date_of_birth }}</td>
+                    <td class="place-of-birth">{{ member.place_of_birth }}</td>
+                    <td class="city-of-residence">{{ member.city_of_residence }}</td>
+                    <td class="phone-number">{{ member.phone_number }}</td>
+                    <td class="deletion">
+                        <form action="" method="post" class="delete-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="member-id" value="{{ member.id }}">
+                            <button type="submit" class="delete-btn" aria-label="Supprimer ce membre">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            {% empty %}
+            <p>Aucun membre trouvé.</p>
+            {% endfor %}
         </div>
     </div>
-</main>
+</div>
+{% endblock %}
+
