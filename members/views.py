@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from librarians.models.medias import Book, Cd, Board_game, Dvd
+from librarians.models_medias import Book, Cd, Board_game, Dvd
 
 
 def display_medias(request):
