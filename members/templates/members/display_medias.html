@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="medias-list-container">
+    <h1 class="display_medias_heading">Nos médias</h1>
+    <table class="medias-table">
+        <thead class="medias-table-head">
+            <tr class="medias-table-row">
+                <th class="media-picture">Aperçu</th>
+                <th class="media-name">Nom</th>
+                <th class="media-creator">Créateur</th>
+                <th class="media-available">Disponibilité</th>
+                <th class="media-quantity">Quantité</th>
+            </tr>
+        </thead>
+
+        <h2 class="display_medias_h2">Nos livres</h2>
+        <tbody class="media-tb">
+            {% for book in medias_list %}
+            <tr class="media-table-row">
+                <td class="media-picture">
+                    <img src="" alt="Un livre">
+                </td>
+                <td class="media-name"></td>
+                <td class="media-creator"></td>
+                <td class="media-available"></td>
+                <td class="media-quantity"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <h2 class="display_medias_h2">Nos CDs</h2>
+        <tbody class="media-tb">
+            {% for cd in medias_list %}
+            <tr class="media-table-row">
+                <td class="media-picture">
+                    <img src="" alt="Un CD">
+                </td>
+                <td class="media-name"></td>
+                <td class="media-creator"></td>
+                <td class="media-available"></td>
+                <td class="media-quantity"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <h2 class="display_medias_h2">Nos jeux de plateaux</h2>
+        <tbody class="media-tb">
+            {% for board_game in medias_list %}
+            <tr class="media-table-row">
+                <td class="media-picture">
+                    <img src="" alt="Un jeu de plateau">
+                </td>
+                <td class="media-name"></td>
+                <td class="media-creator"></td>
+                <td class="media-available"></td>
+                <td class="media-quantity"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <h2 class="display_medias_h2">Nos DVDs</h2>
+        <tbody class="media-tb">
+            {% for dvd in medias_list %}
+            <tr class="media-table-row">
+                <td class="media-picture">
+                    <img src="" alt="Un DVD">
+                </td>
+                <td class="media-name"></td>
+                <td class="media-creator"></td>
+                <td class="media-available"></td>
+                <td class="media-quantity"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
