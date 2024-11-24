@@ -145,8 +145,8 @@ def populate():
                     member=jane,
                     content_type=content_type,
                     object_id=media.id,
-                    borrowing_date=date(2024, 11, 16),
-                    due_date=date(2024, 11, 24)
+                    borrowing_date=date(2024, 11, 15),
+                    due_date=date(2024, 11, 23)
                 )
 
             print("Les emprunts ont été créés avec succès.")
