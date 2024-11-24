@@ -37,8 +37,8 @@ def multiple_medias(db):
 
 
 @pytest.mark.django_db
-def test_display_medias(client, multiple_medias):
-    response = client.get(reverse('display_medias'))
+def test_home_members(client, multiple_medias):
+    response = client.get(reverse('home_members'))
 
     assert response.status_code == 200
 

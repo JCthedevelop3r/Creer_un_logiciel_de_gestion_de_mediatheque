@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from members import views
 
 urlpatterns = [
-    path('', views.display_medias, name='display_medias' )
+    path('', views.home_members, name='home_members' )
 ]
