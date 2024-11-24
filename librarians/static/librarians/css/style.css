@@ -6,6 +6,8 @@ body {
 header {
     display: flex;
     width: 100%;
+    border-bottom: solid 1px black;
+    padding-bottom: 20px;
 }
 
 footer {
@@ -13,14 +15,18 @@ footer {
     justify-content: center;
     width: 100%;
     padding-top: 20px;
+    border-top: solid 1px black;
 }
 
 .quick-menu-container {
-    width: 30vw
+    width: 25vw;
+    border-right: solid 1px black;
 }
 
 main {
-    width: 68vw
+    width: 68vw;
+    padding-left: 10px;
+    padding-bottom: 30px;
 }
 
 .librarians-navs {
