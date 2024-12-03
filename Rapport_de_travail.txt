@@ -55,11 +55,13 @@ INSTRUCTIONS D'INSTALLATION ET D'EXÉCUTION DU PROGRAMME :
 4- Nettoyer la base de données :
 	A- Accéder au shell de Django depuis le terminal avec la commande suivante : python manage.py shell .
 	B- Taper python manage.py flush et répondre "yes".
+	C- Taper exit() pour qui le shell de Django.
 
 5- Peupler la base de données :
 	A- Accéder au shell de Django depuis le terminal avec la commande suivante : python manage.py shell (si 	   vous n'y êtes pas déjà).
-	B- Taper from populate_db.populate import populate .
+	B- Taper from populate_db import populate .
 	C- Taper populate() .
+	D- Taper exit() pour quitter le shell de Django.
 	
 6- Lancer le serveur de développement :
 	A- Exécuter la commande suivante pour démarrer le serveur Django : python manage.py runserver .
