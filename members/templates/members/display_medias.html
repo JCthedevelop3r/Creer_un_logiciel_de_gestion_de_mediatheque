@@ -1,0 +1,87 @@
+{% extends 'members_base.html' %}
+
+{% block content %}
+<div class="medias-list-container">
+    <h1 class="display_medias_heading">Nos médias</h1>
+    <table class="medias-table">
+        <thead class="medias-table-head">
+            <tr class="medias-table-row">
+                <th class="headings"></th>
+                <th class="media-picture">Aperçu</th>
+                <th class="media-name">Nom</th>
+                <th class="media-creator">Créateur</th>
+                <th class="media-available">Disponibilité</th>
+                <th class="media-quantity">Quantité</th>
+            </tr>
+        </thead>
+
+        <tbody class="media-tb">
+            {% for book in books %}
+            <tr class="media-table-row">
+                <td class="media-heading">
+                    <h2 class="display_medias_h2">Nos livres</h2>
+                </td>
+                <td class="media-picture">
+                    <img src="" alt="Un livre">
+                </td>
+                <td class="media-name">{{ book.name }}</td>
+                <td class="media-creator">{{ book.author }}</td>
+                <td class="media-available">{{ book.available|yesno:"Oui,Non" }}</td>
+                <td class="media-quantity">{{ book.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <tbody class="media-tb">
+            {% for cd in cds %}
+            <tr class="media-table-row">
+                <td class="media-heading">
+                    <h2 class="display_medias_h2">Nos CDs</h2>
+                </td>
+                <td class="media-picture">
+                    <img src="" alt="Un CD">
+                </td>
+                <td class="media-name">{{ cd.name }}</td>
+                <td class="media-creator">{{ cd.artist }}</td>
+                <td class="media-available">{{ cd.available|yesno:"Oui,Non" }}</td>
+                <td class="media-quantity">{{ cd.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <tbody class="media-tb">
+            {% for board_game in board_games %}
+            <tr class="media-table-row">
+                <td class="media-heading">
+                    <h2 class="display_medias_h2">Nos jeux de plateau</h2>
+                </td>
+                <td class="media-picture">
+                    <img src="" alt="Un jeu de plateau">
+                </td>
+                <td class="media-name">{{ board_game.name }}</td>
+                <td class="media-creator">{{ board_game.creator }}</td>
+                <td class="media-available">{{ board_game.available|yesno:"Oui,Non" }}</td>
+                <td class="media-quantity">{{ board_game.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <tbody class="media-tb">
+            {% for dvd in dvds %}
+            <tr class="media-table-row">
+                <td class="media-heading">
+                    <h2 class="display_medias_h2">Nos Dvds</h2>
+                </td>
+                <td class="media-picture">
+                    <img src="" alt="Un DVD">
+                </td>
+                <td class="media-name">{{ dvd.name }}</td>
+                <td class="media-creator">{{ dvd.director }}</td>
+                <td class="media-available">{{ dvd.available|yesno:"Oui,Non" }}</td>
+                <td class="media-quantity">{{ dvd.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
