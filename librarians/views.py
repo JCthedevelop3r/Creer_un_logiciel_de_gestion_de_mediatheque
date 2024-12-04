@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models_borrowing import Borrowing
 from .models_members import Member
 from .models_medias import Book, Cd, Board_game, Dvd, Media
+from django.utils.timezone import now
 
 
 def home(request):
@@ -110,6 +111,9 @@ def return_borrowing(request):
                 return redirect('return_borrowing')
 
     borrowings_list = Borrowing.objects.all()
+    for borrowing in borrowings_list:
+        borrowing.is_overdue = borrowing.due_date < now().date()
+
     members_list = Member.objects.all()
     medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
 

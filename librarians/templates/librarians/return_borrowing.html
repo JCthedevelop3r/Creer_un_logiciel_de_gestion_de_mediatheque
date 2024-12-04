@@ -3,64 +3,64 @@
 {% block title %}Rentrer un emprunt{% endblock %}
 
 {% block content %}
-    <div class="return-borrowing-container">
-        <div class="content-return-borrowing-container">
-            <h1 class="return-borrowing-heading">Rentrer un emprunt</h1>
-            <form action="" method="post" class="select-borrowing-form">
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    {% if message.tags %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
+<div class="return-borrowing-container">
+    <div class="content-return-borrowing-container">
+        <h1 class="return-borrowing-heading">Rentrer un emprunt</h1>
+        <form action="" method="post" class="select-borrowing-form">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                {% if message.tags %}
+                <li class="{{ message.tags }}">{{ message }}</li>
                 {% endif %}
-                {% csrf_token %}
-                <table class="return-borrowing-table">
-                    <thead class="return-borrowing-table-head">
-                    <tr class="return-borrowing-table-row">
-                        <th class="th-borrowing-id">ID</th>
-                        <th class="th-first-name">Prénom</th>
-                        <th class="th-last-name">Nom</th>
-                        <th class="th-media-name">Nom du média</th>
-                        <th class="th-media-type">Type</th>
-                        <th class="th-borrowing-date">Date d'emprunt</th>
-                        <th class="th-due-date">Date limite d'emprunt</th>
-                        <th class="th-borrowing-checkbox">Sélectionner</th>
-                    </tr>
-                    </thead>
-                    {% for borrowing in borrowings_list %}
-                    <tbody class="return-borrowing-tbody">
-                    <tr class="return-borrowing-table-row">
-                        <label for="info-borrowing-{{ borrowing.id }}" class="info-borrowing">
-                            <td class="borrowing-id">{{ borrowing.id }}</td>
-                            <td class="first-name">{{ borrowing.member.user.first_name }}</td>
-                            <td class="last-name">{{ borrowing.member.user.last_name }}</td>
-                            <td class="media-name">{{ borrowing.media.name }}</td>
-                            <td class="media-type">{{ borrowing.media.type }}</td>
-                            <td class="borrowing-date">{{ borrowing.borrowing_date }}</td>
-                            <td class="due-date">{{ borrowing.due_date }}</td>
-                            {% if borrowing.is_overdue %}
-                            <td class="is-overdue">RETARD</td>
-                            {% endif %}
-                        </label>
-                        <td class="borrowing-checkbox">
-                            <input type="checkbox"
-                                   name="borrowing_ids"
-                                   value="{{ borrowing.id }}"
-                                   id="info-borrowing-{{ borrowing.id }}"
-                            />
-                        </td>
-                        <input type="hidden" name="member_id_{{ borrowing.id }}" value="{{ borrowing.member.id }}">
-                        {% empty %}
-                        <p>Il n'y a actuellement aucun emprunt.</p>
-                        {% endfor %}
-                    </tr>
-                    </tbody>
-                </table>
-                <input type="submit" value="Rentrer" class="submit-btn"/>
-            </form>
-        </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% csrf_token %}
+            <table class="return-borrowing-table">
+                <thead class="return-borrowing-table-head">
+                <tr class="return-borrowing-table-row">
+                    <th class="th-borrowing-id">ID</th>
+                    <th class="th-first-name">Prénom</th>
+                    <th class="th-last-name">Nom</th>
+                    <th class="th-media-name">Nom du média</th>
+                    <th class="th-media-type">Type</th>
+                    <th class="th-borrowing-date">Date d'emprunt</th>
+                    <th class="th-due-date">Date limite d'emprunt</th>
+                    <th class="th-borrowing-checkbox">Sélectionner</th>
+                </tr>
+                </thead>
+                {% for borrowing in borrowings_list %}
+                <tbody class="return-borrowing-tbody">
+                <tr class="return-borrowing-table-row">
+                    <label for="info-borrowing-{{ borrowing.id }}" class="info-borrowing">
+                        <td class="borrowing-id">{{ borrowing.id }}</td>
+                        <td class="first-name">{{ borrowing.member.user.first_name }}</td>
+                        <td class="last-name">{{ borrowing.member.user.last_name }}</td>
+                        <td class="media-name">{{ borrowing.media.name }}</td>
+                        <td class="media-type">{{ borrowing.media.type }}</td>
+                        <td class="borrowing-date">{{ borrowing.borrowing_date }}</td>
+                        <td class="due-date">{{ borrowing.due_date }}</td>
+                    </label>
+                    <td class="borrowing-checkbox">
+                        <input type="checkbox"
+                               name="borrowing_ids"
+                               value="{{ borrowing.id }}"
+                               id="info-borrowing-{{ borrowing.id }}"
+                        />
+                    </td>
+                    {% if borrowing.is_overdue %}
+                    <td class="is-overdue">RETARD</td>
+                    {% endif %}
+                    <input type="hidden" name="member_id_{{ borrowing.id }}" value="{{ borrowing.member.id }}">
+                    {% empty %}
+                    <p>Il n'y a actuellement aucun emprunt.</p>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="Rentrer" class="submit-btn"/>
+        </form>
     </div>
+</div>
 {% endblock %}

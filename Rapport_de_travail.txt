@@ -1,0 +1,71 @@
+Rapport de travail - Créer un logiciel de gestion de médiathèque
+
+
+ANALYSE DU CODE À REPRENDRE :
+
+Au commencement du projet, j'ai pris le temps d'analyser le code à reprendre. J'ai fais une liste des points à revoir dans ce code que voici : 
+
+-Plusieurs classes sont présentes dans le même fichier, alors que la bonne pratique est de créer un fichier pour une classe.
+
+-Il y a trop d'espace au niveau de l'indentation du contenu de certaines classe (dvd, emprunteur), alors qu'il faut faire quatre espaces normalement.
+
+-Il y a une faute d'orthographe : « bibliothéquaire » au niveau de la fonction « menuBibliotheque() » (dans le print).
+
+-Il y a une fonction menuMembre() alors qu'il y a aussi une fonction menuBibliotheque(). Pourtant il doit y avoir deux applications distinctes : une pour les membres et une pour les bibliothécaires. Ces fonctions ne devraient pas se retrouver dans le même fichier pour une meilleure organisation du projet. Il devrait y avoir un package « librarians » pour l'application des bibliothécaires avec la fonction « menuBiblioteque » et un  package « members » pour l'application des membres (du public de la médiathèque) avec la fonction « menuMembre ».
+
+-Les classes créées semblent correspondre à se que l'on peut emprunter/consulter, mais il y a une classe Emprunteur() qui n'a pas sa place parmi les autres. Il devrait y avoir un fichier pour les classes de type « médias » et un fichier pour les classes de type « emprunts »
+
+-Les noms des fonctions et les champs des modèles sont écris en camelCase alors qu'il faudrait les écrire en snake_case. De plus, le nom de toutes les classes devraient commencer par une majuscule.
+
+-Il y a un mélange d'anglais et de français alors qu'il est recommandé de coder en anglais ou du moins de se fixer sur une langue pour un projet.
+
+
+MISE EN PLACE DU PROJET :
+
+L'analyse du code à reprendre m'a permis de progresser sur la mise en place de l'organisation de mon projet de développement.
+
+En effet, j'avais pour but de séparer le projet en deux applications comme demandé dans le sujet du devoir : une application pour les bibliothécaires "librarians" et une autre pour le public "members".
+En ce qui concerne les modèles pour les médias, je comptais créer une seule classe "Media" et créer les objets de celle-ci en fonction du type de média (par exemple, lors de la création d'un média), c'est-à-dire un livre, un CD, un jeu de plateau ou un DVD, mais je me suis rendu compte en cours de développement que cette façon de faire était impossible à mettre en place puisque je n'allais pas pouvoir avoir de tables "Book" ou "Cd" par exemple, alors que c'était ce que je souhaitais à l'origine.
+J'ai donc restructuré mon code de façon à avoir une classe pour chaque type de média. En cours de développement, j'ai découvert la possibilité de créer une classe parente abstraite "Media" qui m'a permis de réduire la répétition de code dans la création de ses classes enfants.
+Mais j'ai d'abord commencé le projet par l'application des bibliotécaires "librarians" en créant les templates, en créant une base pour les vues, en créant les URLs puis en créant les modèles. J'ai ensuite continué mon développement des fonctionnalités demandées chaque nom de vue (de fonctionnalité) ayant le même nom que son URL (à part pour la fonctionnalité de suppression). En général, chaque fonctionnalité suit le même pattern : je récupère les données envoyées par le client grâce à la méthode POST, je traite les données pour répondre à la requête, retourne un message de succès si la fonctionnalité a bien fonctionné ou un message d'erreur dans le cas contraire en passant par les fonctionnalités DTL (Django Template Language) sur le template. Les données à traiter et/ou à afficher sont récupérées en passant par les modèles (ex : members_list = Member.objects.all()) et retournées en passant par le "context" et l'URL correspondant (ex : context = {'name':'display_medias','medias_list':medias_list,} return render(request, 'librarians/display_medias.html', context)).
+Après la restructuration de mon code mentionné précédemment, j'ai créer un package "tests" afin de tester chaque fonctionnalité avec pytest. J'ai créer un fichier de test pour chaque fonctionnalité (sauf pour la fonctionnalité de suppression qui se trouve dans le fichier de test pour la fonctionnalité d'affichage des médias). Grâce à pytest, j'ai pu créer une base de données temporaire pour chaque test avec des données simulées uniquement pour les tests. J'ai vérifier que les comportements attendus soient les bons pour chaque test afin de créer des tests valides et cohérents.
+Ensuite, j'ai créer l'application pour le public "members" en suivant les mêmes étapes que cités précédemment (templates, URLs/vues, modèles, développement des fonctionnalités dans les vues, tests).
+Enfin, j'ai créer un fichier "db_populate.py" pour peupler la base de données afin de fournir des données test pour le correcteur  dans le but de tester l'interface de l'application. Des médias, des membres et des emprunts sont générés en exécutant la fonction "populate()" dans le shell Django. Au sein de ce peuplement, il y a trois membres : John Doe, Jane Doe et Paul Dupont. Le membre "John Doe" a été créé pour vérifier la contrainte "un membre ne peut pas avoir plus de 3 emprunts à la fois" car il a trois emprunts. La membre Jane Doe a été créé pour vérifier les contraintes "un emprunt doit être retourné au bout d’1 semaine" et "un membre ayant un emprunt en retard ne peut plus emprunter" car elle a un emprunt à plus de sept jours de retard. La contrainte "les jeux de plateaux ne sont pas concernés par les emprunts" est vérifiable sur la page "create_borrowing" où il sera impossible de sélectionner un jeu de plateau pour emprunter.
+
+
+INSTRUCTIONS D'INSTALLATION ET D'EXÉCUTION DU PROGRAMME :
+
+1- Installation de PyCharm :
+	A- Aller sur le site officiel de JetBrains : https://www.jetbrains.com/pycharm/ .
+	B- Télécharger et installer la version gratuite, "Community" de PyCharm.
+	C- Windows : exécuter le fichier .exe qui démarre l'assistant d'installation et suivre les étapes suggérées 	             par l'assistant.
+	   Mac : Déplacer PyCharm dans le dossier Applications.
+	   Linux : Décompresser le fichier PyCharm-2024.3.tar.gz dans un répertoire vide à l'aide de la commande 	           suivante : tar -xzf PyCharm-2024.3.tar.gz et exécuter PyCharm.sh depuis le sous-répertoire bin.
+
+2- Ouvrir le projet Django dans PyCharm :
+	A- Télécharger le répertoire contenant le projet.
+	B- Ouvrir PyCharm, Cliquer sur Open dans l'écran d'accueil et sélectionner le dossier du projet et cliquer 	   sur OK.
+
+3- Installer les modules nécessaires :
+	A- Vérifier que Python est installé : Windows : Ouvrir un terminal (en bas à gauche de l'interface PyCharm) 							et taper python --version.
+					      Mac/Linux : Taper python3 --version.
+	   Si Python n'est pas installé, le télécharger à l'URL suivante : https://www.python.org/downloads/ .
+	B- Exécuter la commande pip install -r requirements.txt dans le terminal pour installer les modules 	  	   nécessaires.
+
+4- Nettoyer la base de données :
+	A- Accéder au shell de Django depuis le terminal avec la commande suivante : python manage.py shell .
+	B- Taper python manage.py flush et répondre "yes".
+	C- Taper exit() pour qui le shell de Django.
+
+5- Peupler la base de données :
+	A- Accéder au shell de Django depuis le terminal avec la commande suivante : python manage.py shell (si 	   vous n'y êtes pas déjà).
+	B- Taper from populate_db import populate .
+	C- Taper populate() .
+	D- Taper exit() pour quitter le shell de Django.
+	
+6- Lancer le serveur de développement :
+	A- Exécuter la commande suivante pour démarrer le serveur Django : python manage.py runserver .
+	B- Une fois le serveur démarré, ouvrir un navigateur et accéder à l'URL suivante :  		http://127.0.0.1:8000/ .
+
+
+	   
