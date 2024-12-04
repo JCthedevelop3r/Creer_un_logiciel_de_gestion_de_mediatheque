@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import date, timedelta
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from .models_members import Member
 from .models_medias import Book, Cd, Board_game, Dvd
 
@@ -10,6 +12,9 @@ class Borrowing(models.Model):
     cd = models.ForeignKey(Cd, on_delete=models.CASCADE, null=True, blank=True)
     board_game = models.ForeignKey(Board_game, on_delete=models.CASCADE, null=True, blank=True)
     dvd = models.ForeignKey(Dvd, on_delete=models.CASCADE, null=True, blank=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,  null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    media = GenericForeignKey('content_type', 'object_id')
     borrowing_date = models.DateField(default=date.today)
     due_date = models.DateField(blank=True, null=True)
 

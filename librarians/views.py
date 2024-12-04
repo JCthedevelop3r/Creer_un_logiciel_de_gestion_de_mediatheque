@@ -1,24 +1,21 @@
-from datetime import date, timedelta
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils import timezone
 from itertools import chain
+from django.contrib.contenttypes.models import ContentType
 from .models_borrowing import Borrowing
 from .models_members import Member
-from .models_medias import Book, Cd, Board_game, Dvd
+from .models_medias import Book, Cd, Board_game, Dvd, Media
 
 
-# Create your views here.
 def home(request):
     members_list = Member.objects.all()
+    medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
     context = {
         'name': 'home',
         'members_list': members_list,
-        'books_list': Book.objects.all(),
-        'cds_list': Cd.objects.all(),
-        'board_games_list': Board_game.objects.all(),
-        'dvds_list': Dvd.objects.all(),
+        'medias_list': medias_list
     }
     return render(request, 'librarians/home.html', context)
 
@@ -52,12 +49,23 @@ def create_borrowing(request):
             for model in (Book, Cd, Board_game, Dvd):
                 try:
                     media = model.objects.get(id=media_id)
+                    content_type = ContentType.objects.get_for_model(model)
+
+                    if media.quantity is not None and media.quantity > 0:
+                        Borrowing.objects.create(member=member, content_type=content_type, object_id=media.id)
+
+                        media.quantity -= 1
+                        media.save()
+
+                        member.borrowings_number += 1
+                        member.save()
+
+                        media.media_unavailable()
+                    else:
+                        messages.error(request, f"Le média {media.name} ({content_type}) n'est pas disponible.")
                     break
                 except model.DoesNotExist:
                     continue
-
-            if media:
-                Borrowing.objects.create(member=member, media=media)
 
         messages.success(request, "L'emprunt a été créé avec succès.")
         return redirect('create_borrowing')
@@ -75,9 +83,32 @@ def create_borrowing(request):
 
 
 def return_borrowing(request):
+    if request.method == 'POST':
+        borrowing_ids = request.POST.getlist('borrowing_ids')
+
+        for borrowing_id in borrowing_ids:
+            borrowing = get_object_or_404(Borrowing, id=borrowing_id)
+            member_id = request.POST.get(f'member_id_{borrowing_id}')
+            member = get_object_or_404(Member, id=member_id)
+            media = borrowing.media
+
+            if media:
+                member.borrowings_number -= 1
+                member.save()
+
+                media.quantity += 1
+                media.save()
+
+                media.media_unavailable()
+                borrowing.delete()
+
+                messages.success(request, "Les emprunts ont été rentrés avec succès.")
+                return redirect('return_borrowing')
+
     borrowings_list = Borrowing.objects.all()
     members_list = Member.objects.all()
-    medias_list = chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
+    medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
+
     context = {
         'name': 'return_borrowing',
         'members_list': members_list,
@@ -106,9 +137,11 @@ def display_medias(request):
             media.delete()
             messages.success(request, "Le média a été supprimé avec succès.")
 
+    medias_list = chain(Book.objects.all(), Cd.objects.all(), Board_game.objects.all(), Dvd.objects.all())
+
     context = {
         'name': 'display_medias',
-        'medias_list': chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
+        'medias_list': medias_list,
     }
     return render(request, 'librarians/display_medias.html', context)
 
@@ -122,9 +155,9 @@ def add_media(request):
 
         if Book.objects.filter(name=media_name, type=media_type, author=media_creator).exists() or Cd.objects.filter(
                 name=media_name, type=media_type, artist=media_creator).exists() or Board_game.objects.filter(
-                name=media_name, type=media_type, creator=media_creator).exists() or Dvd.objects.filter(name=media_name,
-                                                                                                        type=media_type,
-                                                                                                        director=media_creator).exists():
+            name=media_name, type=media_type, creator=media_creator).exists() or Dvd.objects.filter(name=media_name,
+                                                                                                    type=media_type,
+                                                                                                    director=media_creator).exists():
             messages.error(request, "Ce média a déjà été ajouté.")
             return render(request, 'librarians/add_media.html', {
                 'media_name': media_name,
@@ -218,5 +251,27 @@ def display_members(request):
 
 
 def update_member(request):
-    context = {'name': 'update_member'}
+    if request.method == 'POST':
+        member_id = request.POST.get("member-id")
+        member = get_object_or_404(Member, id=member_id)
+
+        member.user.first_name = request.POST.get('first-name')
+        member.user.last_name = request.POST.get('last-name')
+        member.user.email = request.POST.get('e-mail')
+        member.date_of_birth = request.POST.get('date-of-birth')
+        member.place_of_birth = request.POST.get('place-of-birth')
+        member.city_of_residence = request.POST.get('city-of-residence')
+        member.phone_number = request.POST.get('phone-number')
+
+        member.user.save()
+        member.save()
+
+        messages.success(request, "Le membre a été mis à jour avec succès.")
+        return redirect('update_member')
+
+    members_list = Member.objects.all()
+    context = {
+        'name': 'update_member',
+        'members_list': members_list
+    }
     return render(request, 'librarians/update_member.html', context)

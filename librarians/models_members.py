@@ -8,7 +8,7 @@ class Member(models.Model):
     place_of_birth = models.CharField(max_length=50)
     city_of_residence = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=10)
-    borrowings_number = models.IntegerField(null=True, blank=True)
+    borrowings_number = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"

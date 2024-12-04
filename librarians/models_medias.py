@@ -1,51 +1,53 @@
 from django.db import models
 
 
-class Book(models.Model):
+class Media(models.Model):
     name = models.CharField(max_length=100)
-    type = models.CharField(max_length=15, default="book")
+    available = models.BooleanField(default=True)
+    quantity = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        abstract = True  # Cette classe est abstraite, donc non instanciable directement
+
+    def media_unavailable(self):
+        if self.quantity is not None:
+            self.available = self.quantity > 0
+
+    def save(self, *args, **kwargs):
+        self.media_unavailable()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Book(Media):
     author = models.CharField(max_length=100)
-    borrowing_date = models.DateField(null=True, blank=True)
-    available = models.BooleanField(default=True)
-    borrowers_number = models.IntegerField(null=True, blank=True)
-    quantity = models.IntegerField(null=True, blank=True)
+    type = models.CharField(max_length=15, default="book")
 
     def __str__(self):
-        return f"{self.name} {self.author}"
+        return f"{self.name} by {self.author}"
 
 
-class Cd(models.Model):
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=15, default="cd")
+class Cd(Media):
     artist = models.CharField(max_length=100)
-    borrowing_date = models.DateField(null=True, blank=True)
-    available = models.BooleanField(default=True)
-    borrowers_number = models.IntegerField(null=True, blank=True)
-    quantity = models.IntegerField(null=True, blank=True)
+    type = models.CharField(max_length=15, default="cd")
 
     def __str__(self):
-        return f"{self.name} {self.artist}"
+        return f"{self.name} by {self.artist}"
 
 
-class Board_game(models.Model):
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=15, default="board_game")
+class Board_game(Media):
     creator = models.CharField(max_length=100)
-    available = models.BooleanField(default=True)
-    quantity = models.IntegerField(null=True, blank=True)
+    type = models.CharField(max_length=15, default="board_game")
 
     def __str__(self):
-        return f"{self.name} {self.creator}"
+        return f"{self.name} by {self.creator}"
 
 
-class Dvd(models.Model):
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=15, default="dvd")
+class Dvd(Media):
     director = models.CharField(max_length=100)
-    borrowing_date = models.DateField(null=True, blank=True)
-    available = models.BooleanField(default=True)
-    borrowers_number = models.IntegerField(null=True, blank=True)
-    quantity = models.IntegerField(null=True, blank=True)
+    type = models.CharField(max_length=15, default="dvd")
 
     def __str__(self):
-        return f"{self.name} {self.director}"
+        return f"{self.name} by {self.director}"
