@@ -3,19 +3,22 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils import timezone
+from itertools import chain
 from .models_borrowing import Borrowing
 from .models_members import Member
-from .models_medias import Media
+from .models_medias import Book, Cd, Board_game, Dvd
 
 
 # Create your views here.
 def home(request):
     members_list = Member.objects.all()
-    medias_list = Media.objects.all()
     context = {
         'name': 'home',
         'members_list': members_list,
-        'medias_list': medias_list
+        'books_list': Book.objects.all(),
+        'cds_list': Cd.objects.all(),
+        'board_games_list': Board_game.objects.all(),
+        'dvds_list': Dvd.objects.all(),
     }
     return render(request, 'librarians/home.html', context)
 
@@ -43,19 +46,30 @@ def create_borrowing(request):
                            "Ce membre a au moins un emprunt en retard et ne peut pas emprunter de nouveaux médias.")
             return redirect('create_borrowing')
 
+        # Recherche du média sélectionné en fonction de son id en parcourant chaque type de média
         for media_id in media_ids:
-            media = get_object_or_404(Media, id=media_id)
-            Borrowing.objects.create(member=member, media=media)
+            media = None
+            for model in (Book, Cd, Board_game, Dvd):
+                try:
+                    media = model.objects.get(id=media_id)
+                    break
+                except model.DoesNotExist:
+                    continue
+
+            if media:
+                Borrowing.objects.create(member=member, media=media)
 
         messages.success(request, "L'emprunt a été créé avec succès.")
         return redirect('create_borrowing')
 
     members_list = Member.objects.all()
-    medias_list = Media.objects.all()
     context = {
         'name': 'create_borrowing',
         'members_list': members_list,
-        'medias_list': medias_list
+        'books_list': Book.objects.all(),
+        'cds_list': Cd.objects.all(),
+        'board_games_list': Board_game.objects.all(),
+        'dvds_list': Dvd.objects.all(),
     }
     return render(request, 'librarians/create_borrowing.html', context)
 
@@ -63,7 +77,7 @@ def create_borrowing(request):
 def return_borrowing(request):
     borrowings_list = Borrowing.objects.all()
     members_list = Member.objects.all()
-    medias_list = Media.objects.all()
+    medias_list = chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
     context = {
         'name': 'return_borrowing',
         'members_list': members_list,
@@ -76,14 +90,25 @@ def return_borrowing(request):
 def display_medias(request):
     if request.method == 'POST':
         media_id = request.POST.get("media-id")
-        media = get_object_or_404(Media, id=media_id)
-        media.delete()
-        messages.success(request, "Le média a été supprimé avec succès.")
+        media_type = request.POST.get("media-type")
 
-    medias_list = Media.objects.all()
+        media = None
+        if media_type == "book":
+            media = get_object_or_404(Book, id=media_id)
+        elif media_type == "cd":
+            media = get_object_or_404(Cd, id=media_id)
+        elif media_type == "board_game":
+            media = get_object_or_404(Board_game, id=media_id)
+        elif media_type == "dvd":
+            media = get_object_or_404(Dvd, id=media_id)
+
+        if media:
+            media.delete()
+            messages.success(request, "Le média a été supprimé avec succès.")
+
     context = {
         'name': 'display_medias',
-        'medias_list': medias_list
+        'medias_list': chain(Book.objects.all() + Cd.objects.all() + Board_game.objects.all() + Dvd.objects.all())
     }
     return render(request, 'librarians/display_medias.html', context)
 
@@ -92,9 +117,14 @@ def add_media(request):
     if request.method == 'POST':
         media_name = request.POST['media-name']
         media_type = request.POST['media-type']
+        media_creator = request.POST['media-creator']
         media_quantity = request.POST['media-quantity']
 
-        if Media.objects.filter(name=media_name, type=media_type).exists():
+        if Book.objects.filter(name=media_name, type=media_type, author=media_creator).exists() or Cd.objects.filter(
+                name=media_name, type=media_type, artist=media_creator).exists() or Board_game.objects.filter(
+                name=media_name, type=media_type, creator=media_creator).exists() or Dvd.objects.filter(name=media_name,
+                                                                                                        type=media_type,
+                                                                                                        director=media_creator).exists():
             messages.error(request, "Ce média a déjà été ajouté.")
             return render(request, 'librarians/add_media.html', {
                 'media_name': media_name,
@@ -102,35 +132,31 @@ def add_media(request):
                 'media_quantity': media_quantity
             })
 
-        if media_type == "Livre":
-            media_author = request.POST.get('media-author')
-            book = Media.objects.create(
+        if media_type == "book":
+            Book.objects.create(
                 name=media_name,
-                author= media_author,
+                author=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
-        elif media_type == "CD":
-            media_artist = request.POST.get('media-artist')
-            cd = Media.objects.create(
+        elif media_type == "cd":
+            Cd.objects.create(
                 name=media_name,
-                artist= media_artist,
+                artist=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
-        elif media_type == "Jeu de plateau":
-            media_creator = request.POST.get('media-creator')
-            board_game = Media.objects.create(
+        elif media_type == "board_game":
+            Board_game.objects.create(
                 name=media_name,
-                creator= media_creator,
+                creator=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
         else:
-            media_director = request.POST.get('media-director')
-            dvd = Media.objects.create(
+            Dvd.objects.create(
                 name=media_name,
-                director= media_director,
+                director=media_creator,
                 type=media_type,
                 quantity=int(media_quantity)
             )
