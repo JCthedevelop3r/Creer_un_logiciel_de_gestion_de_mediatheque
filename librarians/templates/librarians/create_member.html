@@ -1,48 +1,52 @@
-<main>
-    <div class="create-member-container">
-        <div class="content-create-member-container">
-            <h1 class="create-member-heading">Créer un membre</h1>
-            <form action="" method="post" class="create-member-form">
-                {% csrf_token %}
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                            {% if message.tags %}
-                                <li class="{{ message.tags }}">{{ message }}</li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+{% extends 'base.html' %}
+
+{% block title %}Créer un membre{% endblock %}
+
+{% block content %}
+<div class="create-member-container">
+    <div class="content-create-member-container">
+        <h1 class="create-member-heading">Créer un membre</h1>
+        <form action="" method="post" class="create-member-form">
+            {% csrf_token %}
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                {% if message.tags %}
+                <li class="{{ message.tags }}">{{ message }}</li>
                 {% endif %}
-                <div class="member-last-name-input-container">
-                    <label for="last-name">Nom : </label>
-                    <input type="text" id="last-name" name="last-name" class="last-name-input">
-                </div>
-                <div class="member-first-name-input-container">
-                    <label for="first-name">Prénom : </label>
-                    <input type="text" id="first-name" name="first-name" class="first-name-input">
-                </div>
-                <div class="date-of-birth-input-container">
-                    <label for="date-of-birth">Date de naissance : </label>
-                    <input type="text" id="date-of-birth" name="date-of-birth" class="date-of-birth-input">
-                </div>
-                <div class="place-of-birth-input-container">
-                    <label for="place-of-birth">Lieu de naissance : </label>
-                    <input type="text" id="place-of-birth" name="place-of-birth" class="place-of-birth-input">
-                </div>
-                <div class="city-of-residence-input-container">
-                    <label for="city-of-residence">Ville de résidence : </label>
-                    <input type="text" id="city-of-residence" name="city-of-residence" class="city-of-residence-input">
-                </div>
-                <div class="phone-number-input-container">
-                    <label for="phone-number">Numéro de téléphone : </label>
-                    <input type="text" id="phone-number" name="phone-number" class="phone-number-input">
-                </div>
-                <div class="e-mail-input-container">
-                    <label for="e-mail">Adresse mail : </label>
-                    <input type="text" id="e-mail" name="e-mail" class="e-mail-input">
-                </div>
-                <input type="submit" value="Créer" class="submit-btn">
-            </form>
-        </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="member-last-name-input-container">
+                <label for="last-name">Nom : </label>
+                <input type="text" id="last-name" name="last-name" class="last-name-input">
+            </div>
+            <div class="member-first-name-input-container">
+                <label for="first-name">Prénom : </label>
+                <input type="text" id="first-name" name="first-name" class="first-name-input">
+            </div>
+            <div class="date-of-birth-input-container">
+                <label for="date-of-birth">Date de naissance : </label>
+                <input type="text" id="date-of-birth" name="date-of-birth" class="date-of-birth-input">
+            </div>
+            <div class="place-of-birth-input-container">
+                <label for="place-of-birth">Lieu de naissance : </label>
+                <input type="text" id="place-of-birth" name="place-of-birth" class="place-of-birth-input">
+            </div>
+            <div class="city-of-residence-input-container">
+                <label for="city-of-residence">Ville de résidence : </label>
+                <input type="text" id="city-of-residence" name="city-of-residence" class="city-of-residence-input">
+            </div>
+            <div class="phone-number-input-container">
+                <label for="phone-number">Numéro de téléphone : </label>
+                <input type="text" id="phone-number" name="phone-number" class="phone-number-input">
+            </div>
+            <div class="e-mail-input-container">
+                <label for="e-mail">Adresse mail : </label>
+                <input type="text" id="e-mail" name="e-mail" class="e-mail-input">
+            </div>
+            <input type="submit" value="Créer" class="submit-btn">
+        </form>
     </div>
-</main>
+</div>
+{% endblock %}

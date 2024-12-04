@@ -1,4 +1,8 @@
-<main>
+{% extends 'base.html' %}
+
+{% block title %}Afficher les médias{% endblock %}
+
+{% block content %}
     <div class="display-medias-container">
         <div class="content-display-medias-container">
             <h1 class="media-list-heading">Liste médias</h1>
@@ -9,23 +13,35 @@
                 {% endfor %}
             </ul>
             {% endif %}
-            <div class="media-list">
+            <table class="media-table">
+                <thead class="media-table-head">
+                <tr class="media-table-headings-row">
+                    <th class="th-media-name">Nom</th>
+                    <th class="th-media-type">Type</th>
+                    <th class="th-media-quantity">Quantité</th>
+                    <th class="th-deletion">Supprimer</th>
+                </tr>
+                </thead>
+                <tbody>
                 {% for media in medias_list %}
-                <div id="media-{{ media.id }}" class="media">
-                    <span class="media-name">{{ media.name }}</span>
-                    <span class="media-type">{{ media.type }}</span>
-                    <span class="quantity">{{ media.quantity }}</span>
-                    <form action="" method="post" class="delete-form">
-                        {% csrf_token %}
-                        <input type="hidden" name="media-id" value="{{ media.id }}">
-                        <input type="hidden" name="media-type" value="{{ media.type }}">
-                        <button type="submit" class="delete-btn" aria-label="Supprimer ce média">🗑️</button>
-                    </form>
-                </div>
+                <tr id="media-{{ media.id }}" class="media">
+                    <td class="media-name">{{ media.name }}</td>
+                    <td class="media-type">{{ media.type }}</td>
+                    <td class="quantity">{{ media.quantity }}</td>
+                    <td class="deletion">
+                        <form action="" method="post" class="delete-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="media-id" value="{{ media.id }}">
+                            <input type="hidden" name="media-type" value="{{ media.type }}">
+                            <button type="submit" class="delete-btn" aria-label="Supprimer ce média">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
                 {% empty %}
                 <p>Aucun média trouvé.</p>
                 {% endfor %}
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
-</main>
+{% endblock %}}

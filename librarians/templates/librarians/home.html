@@ -1,38 +1,58 @@
-<main>
-  <div class="lists-container">
-    <div class="lists">
-      <div class="content-members-list-container">
-        <h1 class="members-list-heading">Liste membres</h1>
-        <div class="members-list-container">
-          <ul class="members-list">
-            {% for member in members_list %}
-            <li class="member-name">
-              <span class="first-name">{{ member.user.first_name }}</span>
-              <span class="last-name">{{ member.user.last_name }}</span>
-              <span class="borrowings-numbers">{{ member.borrowings_number }}</span>
-            </li>
-            {% empty %}
-            <li>Aucun membre trouvé.</li>
-            {% endfor %}
-          </ul>
+{% extends 'base.html' %}
+
+{% block content %}
+        <div class="lists-container">
+            <div class="lists">
+                <div class="content-members-list-container">
+                    <h1 class="members-list-heading">Liste membres</h1>
+                    <div class="members-list-container">
+                        <table class="members-table">
+                            <thead class="members-table-head">
+                            <tr class="members-headings-table-row">
+                                <th class="th-first-name">Prénom</th>
+                                <th class="th-last-name">Nom</th>
+                                <th class="th-borrowings-numbers">Emprunts</th>
+                            </tr>
+                            </thead>
+                            <tbody class="members-list">
+                            {% for member in members_list %}
+                            <tr class="member-table-row">
+                                <td class="first-name">{{ member.user.first_name }}</td>
+                                <td class="last-name">{{ member.user.last_name }}</td>
+                                <td class="borrowings-numbers">{{ member.borrowings_number }}</td>
+                            </tr>
+                            {% empty %}
+                            <p>Aucun membre trouvé.</p>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="content-media-list-container">
+                    <h1 class="media-list-heading">Liste médias</h1>
+                    <div class="media-list-container">
+                        <table class="media-table">
+                            <thead>
+                            <tr>
+                                <th class="th-media-name">Nom</th>
+                                <th class="th-media-type">Type</th>
+                                <th class="th-media-quantity">Quantité</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for media in medias_list %}
+                                <tr class="media-table-row">
+                                    <td class="media-name">{{ media.name }}</td>
+                                    <td class="media-type">{{ media.type }}</td>
+                                    <td class="quantity">{{ media.quantity }}</td>
+                                </tr>
+                            {% empty %}
+                                <p>Aucun média trouvé.</p>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="content-media-list-container">
-        <h1 class="media-list-heading">Liste médias</h1>
-        <div class="media-list-container">
-          <ul class="media-list">
-            {% for media in medias_list %}
-            <li class="media">
-              <span class="media-name">{{ media.name }}</span>
-              <span class="media-type">{{ media.type }}</span>
-              <span class="quantity">{{ media.quantity }}</span>
-            </li>
-            {% empty %}
-            <li>Aucun média trouvé.</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
+{% endblock %}
