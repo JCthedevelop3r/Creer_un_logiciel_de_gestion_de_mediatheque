@@ -10,6 +10,11 @@
           <span class="last-name">{{ borrowing.member.user.last_name }}</span>
           <span class="media-name">{{ borrowing.media.name }}</span>
           <span class="media-type">{{ borrowing.media.type }}</span>
+          <span class="borrowing-date">{{ borrowing.borrowing_date }}</span>
+          <span class="due-date">{{ borrowing.due_date }}</span>
+          {% if borrowing.is_overdue %}
+            <span class="is-overdue">RETARD</span>
+          {% endif %}
         </label>
         <input type="checkbox" name="info-borrowing" id="info-borrowing" />
         {% empty %}

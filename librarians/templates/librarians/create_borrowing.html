@@ -1,0 +1,49 @@
+<main>
+    <div class="create-borrowing-container">
+        <div class="content-create-borrowing-container">
+            <h1 class="create-borrowing-heading">Créer un emprunt</h1>
+            <form action="" method="post">  <!-- Enveloppez tout le contenu dans un formulaire -->
+                {% csrf_token %}
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    {% if message.tags %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <div class="select-member-container">
+                    <h2 class="select-member-heading">Sélectionnez un membre :</h2>
+                    {% for member in members_list %}
+                    <label for="member-name-{{ member.id }}" class="member-name-label">
+                        <span class="first-name">{{ member.user.first_name }}</span>
+                        <span class="last-name">{{ member.user.last_name }}</span>
+                    </label>
+                    <input type="radio" name="member_id" id="member-name-{{ member.id }}" value="{{ member.id }}"
+                           required/>
+                    {% empty %}
+                    <p>Il n'y a actuellement aucun membre.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="select-media-container">
+                    <h2 class="select-media-heading">Sélectionnez un média :</h2>
+                    {% for media in medias_list %}
+                    <label for="media-name-{{ media.id }}" class="media-name-label">
+                        <span class="media-name">{{ media.name }}</span>
+                        <span class="media-type">{{ media.type }}</span>
+                    </label>
+                    <input type="checkbox" name="media_ids" id="media-name-{{ media.id }}" value="{{ media.id }}"/>
+                    {% empty %}
+                    <p>Il n'y a actuellement aucun média.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="submit-btn-container">
+                    <input type="submit" value="Créer" class="submit-btn"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
